@@ -1,0 +1,64 @@
+﻿
+@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Exams
+@model OnlineTestForCLanguage.Web.Models.Exams.IndexViewModel
+@{ Layout = null; }
+<div class="modal fade" id="ExamCreateModal" tabindex="-1" role="dialog" aria-labelledby="ExamCreateModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("新增试题"))
+            <form name="ExamCreateForm" role="form" class="form-horizontal">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Exam-details">试题明细</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4">
+                        <div role="tabpanel" class="tab-pane container active" id="create-Exam-details">
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">试题难度</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" name="Difficulty" required>
+                                        <option value="0">简单</option>
+                                        <option value="1">一般</option>
+                                        <option value="2">困难</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">试题类型</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" name="ExamType" required>
+                                        <option value="0">单选题</option>
+                                        <option value="1">多选题</option>
+                                        <option value="2">判断题</option>
+                                        <option value="4">简答题</option>
+                                        <option value="5">填空题</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">标题</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="Title" class="form-control" required maxlength="80">
+                                </div>
+                            </div>
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">试题内容</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="Content" class="form-control" required maxlength="4000">
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+                @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+            </form>
+        </div>
+    </div>
+</div>
