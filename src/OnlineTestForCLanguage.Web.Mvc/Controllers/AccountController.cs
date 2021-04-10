@@ -382,16 +382,6 @@ namespace OnlineTestForCLanguage.Web.Controllers
         #endregion
 
         #region Change Tenant
-
-        public async Task<ActionResult> TenantChangeModal()
-        {
-            var loginInfo = await _sessionAppService.GetCurrentLoginInformations();
-            return View("/Views/Shared/Components/TenantChange/_ChangeModal.cshtml", new ChangeModalViewModel
-            {
-                TenancyName = loginInfo.Tenant?.TenancyName
-            });
-        }
-
         #endregion
 
         #region Common

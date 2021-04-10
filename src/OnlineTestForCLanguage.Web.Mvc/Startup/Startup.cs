@@ -62,7 +62,7 @@ namespace OnlineTestForCLanguage.Web.Startup
 
             services.AddLogDashboard(opt =>
             {
-                opt.SetRootPath(Path.Combine(_env.ContentRootPath, @"App_Data/Logs"));
+                opt.SetRootPath(@"App_Data/Logs");
             });
             // Configure Abp and Dependency Injection
             return services.AddAbp<OnlineTestForCLanguageWebMvcModule>(
@@ -85,9 +85,9 @@ namespace OnlineTestForCLanguage.Web.Startup
             {
                 app.UseExceptionHandler("/Error");
             }
-            app.UseLogDashboard();
+           
             app.UseStaticFiles();
-
+            app.UseLogDashboard();
             app.UseRouting();
 
             app.UseAuthentication();

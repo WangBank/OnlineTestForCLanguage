@@ -11,7 +11,7 @@
     AbpAntiForgeryManager.SetCookie(Context);
 
     var pageTitle = !string.IsNullOrWhiteSpace(ViewBag.Title) ? ViewBag.Title + " / " : "";
-    pageTitle += "OnlineTestForCLanguage";
+    pageTitle += "C语言在线考试系统";
 }
 <!DOCTYPE html>
 <html lang="@LanguageManager.CurrentLanguage.Name">
@@ -28,7 +28,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/"><b>OnlineTestForCLanguage</b></a>
+            <a href="/"><b>C语言在线考试系统</b></a>
         </div>
         <div class="card">
             @if (MultiTenancyConfig.IsEnabled)
@@ -46,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-                <small>&copy; @DateTime.Now.Year OnlineTestForCLanguage. <b>Version </b> @AppVersionHelper.Version [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]</small>
+                <small>&copy; @DateTime.Now.Year C语言在线考试系统. <b>Version </b> @AppVersionHelper.Version [@AppVersionHelper.ReleaseDate.ToString("yyyyMMdd")]</small>
             </div>
         </div>
     </div>
