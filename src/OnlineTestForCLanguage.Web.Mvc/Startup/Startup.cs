@@ -59,10 +59,10 @@ namespace OnlineTestForCLanguage.Web.Startup
             services.AddScoped<IWebResourceManager, WebResourceManager>();
 
             services.AddSignalR();
-
+            var baselocation = AppContext.BaseDirectory;
             services.AddLogDashboard(opt =>
             {
-                opt.SetRootPath(@"App_Data/Logs");
+                opt.SetRootPath(Path.Combine(baselocation,@"App_Data/Logs"));
             });
             // Configure Abp and Dependency Injection
             return services.AddAbp<OnlineTestForCLanguageWebMvcModule>(
