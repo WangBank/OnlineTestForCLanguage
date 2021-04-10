@@ -10,15 +10,7 @@
         }
 
         var exam = _$form.serializeFormToObject();
-        exam.roleNames = [];
-        var _$roleCheckboxes = _$form[0].querySelectorAll("input[name='role']:checked");
-        if (_$roleCheckboxes) {
-            for (var roleIndex = 0; roleIndex < _$roleCheckboxes.length; roleIndex++) {
-                var _$roleCheckbox = $(_$roleCheckboxes[roleIndex]);
-                exam.roleNames.push(_$roleCheckbox.val());
-            }
-        }
-
+       
         abp.ui.setBusy(_$form);
         _examService.update(exam).done(function () {
             _$modal.modal('hide');

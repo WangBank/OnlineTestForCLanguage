@@ -1,4 +1,5 @@
-﻿using Abp.AspNetCore.Mvc.Authorization;
+﻿using Abp.Application.Services.Dto;
+using Abp.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineTestForCLanguage.Authorization;
 using OnlineTestForCLanguage.Controllers;
@@ -28,6 +29,18 @@ namespace OnlineTestForCLanguage.Web.Controllers
             var output = await _examAppService.GetAllAsync(input);
             var model = new IndexViewModel(output.Items);
             return View(model);
+        }
+
+
+        public async Task<ActionResult> EditModal(int examId)
+        {
+            var user = await _examAppService.GetAsync(new EntityDto<int>(examId));
+            var model = new EditUserModalViewModel
+            {
+                User = user,
+                Roles = roles
+            };
+            return PartialView("_EditModal", model);
         }
     }
 }
