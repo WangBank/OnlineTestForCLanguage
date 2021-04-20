@@ -2,6 +2,7 @@
 using Abp.Authorization;
 using Abp.Localization;
 using OnlineTestForCLanguage.Authorization;
+using System.Linq;
 
 namespace OnlineTestForCLanguage.Web.Startup
 {
@@ -21,7 +22,8 @@ namespace OnlineTestForCLanguage.Web.Startup
                         icon: "fas fa-home",
                         requiresAuthentication: true
                     )
-                ).AddItem(
+                )
+                .AddItem(
                     new MenuItemDefinition(
                         PageNames.Users,
                         L("Users"),
@@ -29,15 +31,17 @@ namespace OnlineTestForCLanguage.Web.Startup
                         icon: "fas fa-users",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Users)
                     )
-                ).AddItem(
+                )
+                .AddItem(
                     new MenuItemDefinition(
                         PageNames.Roles,
                         L("Roles"),
                         url: "Roles",
-                        icon: "fas fa-theater-masks",
+                        icon: "fas fa-tired",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Roles)
                             )
-                ).AddItem(
+                )
+                .AddItem(
                     new MenuItemDefinition(
                         //PageNames.Tenants,
                         //L("Tenants"),
@@ -47,8 +51,26 @@ namespace OnlineTestForCLanguage.Web.Startup
                         PageNames.Exams,
                         L("Exams"),
                         url: "Exams",
-                        icon: "fas fa-building",
+                        icon: "fas fa-umbrella",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Exams)
+                    )
+                )
+                .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Papers,
+                        L("Papers"),
+                        url: "Papers",
+                        icon: "fas fa-weight",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Papers)
+                    )
+                )
+              .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Tests,
+                        L("Tests"),
+                        url: "Tests",
+                        icon: "fas fa-vials",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Tests)
                     )
                 )
                 //.AddItem(

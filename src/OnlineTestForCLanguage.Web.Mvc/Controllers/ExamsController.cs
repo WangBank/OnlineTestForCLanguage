@@ -32,14 +32,11 @@ namespace OnlineTestForCLanguage.Web.Controllers
         }
 
 
-        public async Task<ActionResult> EditModal(int examId)
+        public async Task<ActionResult> EditModal(long examId)
         {
-            var user = await _examAppService.GetAsync(new EntityDto<int>(examId));
-            var model = new EditUserModalViewModel
-            {
-                User = user,
-                Roles = roles
-            };
+            var exam = await _examAppService.GetAsync(new EntityDto<long>(examId));
+            var model = new EditExamModalViewModel();
+            model.Exam = exam;
             return PartialView("_EditModal", model);
         }
     }

@@ -23,7 +23,6 @@ namespace OnlineTestForCLanguage.Web.Views.Shared.Components.SideBarUserArea
             var model = new SideBarUserAreaViewModel
             {
                 LoginInformations = await _sessionAppService.GetCurrentLoginInformations(),
-                IsMultiTenancyEnabled = _multiTenancyConfig.IsEnabled,
             };
 
             return View(model);

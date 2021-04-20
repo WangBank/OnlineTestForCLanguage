@@ -3,7 +3,9 @@
   <texts>
     <text name="HomePage" value="主页" />
     <text name="About" value="关于我们" />
-    <text name="Exams" value="试题管理" />
+    <text name="Exams" value="考题管理" />
+    <text name="Papers" value="试卷管理" />
+    <text name="Tests" value="考试管理" />
     <text name="WelcomeMessage" value="欢迎使用 OnlineTestForCLanguage!" />
     <text name="FormIsNotValidMessage" value="部分输入信息不符合要求，请检查并改正.." />
     <text name="TenantNameCanNotBeEmpty" value="租户名不能为空" />
@@ -28,8 +30,8 @@
     <text name="CopyRight" >© 2018 OnlineTestForCLanguage</text>
     <text name="LoginPrompt" >正在登陆，请稍候！</text>
     <text name="UserProfile" >用户资料</text>
-    <text name="Users" >用户</text>
-    <text name="Roles" >角色</text>
+    <text name="Users" >用户管理</text>
+    <text name="Roles" >角色管理</text>
     <text name="Tenants" >租户</text>
     <text name="Logout" >注销</text>
     <text name="ManageMenu" >菜单</text>
@@ -98,7 +100,7 @@
     <text name="DeleteTenantConfirm">确认删除该租户？</text>
     <text name="EditTenant">编辑租户</text>
     <text name="SearchWithThreeDot">搜索...</text>
-    <text name="ExamList">试题列表</text>
+    <text name="ExamList">考题列表</text>
     
   </texts>
 </localizationDictionary>

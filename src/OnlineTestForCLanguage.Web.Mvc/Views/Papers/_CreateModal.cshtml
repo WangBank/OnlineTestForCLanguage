@@ -1,0 +1,54 @@
+﻿
+@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Papers
+@model OnlineTestForCLanguage.Web.Models.Papers.IndexPaperModalViewModel
+@{ Layout = null; }
+<div class="modal fade" id="PaperCreateModal" tabindex="-1" role="dialog" aria-labelledby="PaperCreateModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("新增试卷"))
+            <form name="PaperCreateForm" role="form" class="form-horizontal">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Paper-details">试卷明细</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" role="tab" href="#create-Exam-details">考题列表</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4">
+                        <div role="tabpanel" class="tab-pane container active" id="create-Paper-details">
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">标题</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="Title" class="form-control" required maxlength="80">
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">试卷总分</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="Score" class="form-control" required maxlength="80">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane container" id="create-Exam-details">
+                            <div class="row">
+                            @foreach (var exam in Model.Exams)
+                            {
+                            <div class="col-md-12">
+                                <input type="checkbox" name="exam" id="exam-@exam.Id" value="@exam.Id" title="@exam.Title" />
+                                <label for="exam-@exam.Id" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+                            </div>
+                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+            </form>
+        </div>
+    </div>
+</div>

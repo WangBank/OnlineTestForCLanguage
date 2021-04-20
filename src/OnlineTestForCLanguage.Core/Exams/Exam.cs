@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace OnlineTestForCLanguage.Exams
 {
     [Table("Exams")]
-    public class Exam : Entity, IHasCreationTime, ISoftDelete
+    public class Exam : Entity<long>, IHasCreationTime, ISoftDelete
     {
         [Required]
         public ExamType ExamType { get; set; }
@@ -21,9 +21,16 @@ namespace OnlineTestForCLanguage.Exams
 
         [StringLength(4000)]
         public string Content { get; set; }
+        [StringLength(4000)]
+        public string Explain { get; set; }
         public string Title { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }
+        public decimal Score { get; set; }
+        /// <summary>
+        /// 正确的考题明细id,以,号分割
+        /// </summary>
+        public string CorrectDetailIds { get; set; }
 
         public Exam()
         {
@@ -58,8 +65,22 @@ namespace OnlineTestForCLanguage.Exams
         [Description("简答题")]
         ShortAnswer = 3,
 
-        [Description("填空题")]
-        GapFilling = 4
+    }
+
+    [Table("ExamDetails")]
+    public class ExamDetail : Entity<long>, IHasCreationTime, ISoftDelete
+    {
+        public long ExamId { get; set; }
+
+        public string Content { get; set; }
+        public DateTime CreationTime { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public ExamDetail()
+        {
+            IsDeleted = false;
+            CreationTime = DateTime.Now;
+        } 
     }
 
 }

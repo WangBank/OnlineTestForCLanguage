@@ -1,0 +1,74 @@
+﻿@using OnlineTestForCLanguage.Web.Startup
+@model OnlineTestForCLanguage.Web.Models.Papers.IndexPaperModalViewModel
+@{ 
+    ViewBag.Title = "试卷管理";
+    ViewBag.CurrentPageName = PageNames.Papers; 
+}
+
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/view-resources/Views/Papers/Index.js" asp-append-version="true"></script>
+    </environment>
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>试卷信息</h1>
+            </div>
+            <div class="col-sm-6">
+                <a href="javascript:;" data-toggle="modal" data-target="#PaperCreateModal" class="btn bg-blue float-sm-right">
+                    <i class="fa fa-plus-square"></i>
+                    新增
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!--Use for bulk actions-->
+                            </div>
+                            <div class="col-md-6">
+                                @await Html.PartialAsync("~/Views/Papers/Index.AdvancedSearch.cshtml")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="PapersTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>试卷编号</th>
+                                        <th>试卷简介</th>
+                                        <th>试题总分</th>
+                                        <th>创建时间</th>
+                                        <th>创建人</th>
+                                        <th style="width: 150px">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("~/Views/Papers/_CreateModal.cshtml", Model)
+
+<div class="modal fade" id="PaperEditModal" tabindex="-1" role="dialog" aria-labelledby="PaperEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>

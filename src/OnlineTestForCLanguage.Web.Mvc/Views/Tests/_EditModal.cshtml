@@ -1,0 +1,32 @@
+﻿@using Abp.Authorization.Users
+@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Web.Models.Tests
+@model EditTestModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("编辑考题"))
+<form name="UserEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.Test.Id" />
+    <div class="modal-body">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Test-details">s考试明细</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-4">
+            <div role="tabpanel" class="tab-pane container active" id="edit-Test-details">
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label" for="Title">标题</label>
+                    <div class="col-md-9">
+                        <input id="Title" type="text" class="form-control" name="Title" value="@Model.Test.Title" required minlength="2">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+
+<script src="~/view-resources/Views/Tests/_EditModal.js" asp-append-version="true"></script>

@@ -7,7 +7,7 @@ using OnlineTestForCLanguage.Sessions.Dto;
 
 namespace OnlineTestForCLanguage.Sessions
 {
-    public interface IExamsAppService : IAsyncCrudAppService<ExamDto, int, PagedExamResultRequestDto, CreateExamDto, ExamDto>
+    public interface IExamsAppService : IAsyncCrudAppService<ExamDto, long, PagedExamResultRequestDto, CreateExamDto, ExamDto>
     {
     }
 }

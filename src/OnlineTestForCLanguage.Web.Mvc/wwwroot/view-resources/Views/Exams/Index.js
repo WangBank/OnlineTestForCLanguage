@@ -107,7 +107,7 @@
         _examService.create(exam).done(function () {
             _$modal.modal('hide');
             _$form[0].reset();
-            abp.notify.info('新增试题成功!');
+            abp.notify.info('新增考题成功!');
             _$examsTable.ajax.reload();
         }).always(function () {
             abp.ui.clearBusy(_$modal);

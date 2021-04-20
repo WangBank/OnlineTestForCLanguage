@@ -16,10 +16,10 @@ using OnlineTestForCLanguage.Sessions.Dto;
 namespace OnlineTestForCLanguage.Sessions
 {
     [AbpAuthorize(PermissionNames.Pages_Exams)]
-    public class ExamsAppService : AsyncCrudAppService<Exam, ExamDto, int,PagedExamResultRequestDto,CreateExamDto,ExamDto>, IExamsAppService
+    public class ExamsAppService : AsyncCrudAppService<Exam, ExamDto, long,PagedExamResultRequestDto,CreateExamDto,ExamDto>, IExamsAppService
     {
-        private readonly IRepository<Exam> _examRepository;
-        public ExamsAppService(IRepository<Exam> examRepository) : base(examRepository)
+        private readonly IRepository<Exam, long> _examRepository;
+        public ExamsAppService(IRepository<Exam, long> examRepository) : base(examRepository)
         {
             _examRepository = examRepository;
         }
@@ -55,9 +55,21 @@ namespace OnlineTestForCLanguage.Sessions
             return await GetAsync(input);
         }
 
-        public override async Task DeleteAsync(EntityDto<int> input)
+        protected override void MapToEntity(ExamDto input, Exam entity)
         {
-            var exam = await _examRepository.FirstOrDefaultAsync(input.Id);
+            entity.Title = input.Title;
+            entity.Score = input.Score;
+            entity.Content = input.Content;
+            entity.CorrectDetailIds = input.CorrectDetailIds;
+            entity.Difficulty = input.Difficulty;
+            entity.Explain = input.Explain;
+            entity.ExamType = input.ExamType;
+        }
+
+
+        public  async Task DeleteAsync(long id)
+        {
+            var exam = await _examRepository.FirstOrDefaultAsync(id);
             await _examRepository.DeleteAsync(exam);
         }
     }

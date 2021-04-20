@@ -1,0 +1,26 @@
+﻿using Abp.AutoMapper;
+using Abp.Runtime.Validation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OnlineTestForCLanguage.Papers.Dto
+{
+    [AutoMapTo(typeof(Paper))]
+    public class CreatePaperDto : IShouldNormalize
+    {
+
+        public string Title { get; set; }
+        public DateTime CreationTime { get; set; }
+        public bool IsDeleted { get; set; }
+        public decimal Score { get; set; }
+        public long CreateUserId { get; set; }
+       public List<long> paperDetails { get; set; }
+        public void Normalize()
+        {
+            IsDeleted = false;
+        }
+    }
+}

@@ -1,7 +1,6 @@
 ﻿(function ($) {
-    var _examService = abp.services.app.exam,
-        l = abp.localization.getSource('OnlineTestForCLanguage'),
-        _$modal = $('#ExamEditModal'),
+    var _examService = abp.services.app.exams,
+        _$modal = $('#examEditModal'),
         _$form = _$modal.find('form');
 
     function save() {
@@ -14,7 +13,7 @@
         abp.ui.setBusy(_$form);
         _examService.update(exam).done(function () {
             _$modal.modal('hide');
-            abp.notify.info(l('SavedSuccessfully'));
+            abp.notify.info('保存成功!');
             abp.event.trigger('exam.edited', exam);
         }).always(function () {
             abp.ui.clearBusy(_$form);

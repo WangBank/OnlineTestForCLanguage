@@ -33,7 +33,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
         {
             var user = await _userAppService.GetAsync(new EntityDto<long>(userId));
             var roles = (await _userAppService.GetRoles()).Items;
-            var model = new EditExamModalViewModel
+            var model = new EditUserModalViewModel
             {
                 User = user,
                 Roles = roles

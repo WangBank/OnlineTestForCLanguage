@@ -9,15 +9,25 @@ using System.Collections.Generic;
 namespace OnlineTestForCLanguage.Sessions.Dto
 {
     [AutoMapFrom(typeof(Exam))]
-    public class ExamDto : EntityDto, IHasCreationTime
+    public class ExamDto : EntityDto<long>, IHasCreationTime
     {
+   
         public ExamType ExamType { get; set; }
 
         public DifficultyType Difficulty { get; set; }
+
+
         public string Content { get; set; }
+       
+        public string Explain { get; set; }
         public string Title { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }
+        public decimal Score { get; set; }
+        /// <summary>
+        /// 正确的考题明细id,以,号分割
+        /// </summary>
+        public string CorrectDetailIds { get; set; }
 
         public string ExamType_Info
         {
