@@ -11,6 +11,15 @@
         var Paper = _$form.serializeFormToObject();
        
         abp.ui.setBusy(_$form);
+
+        Paper.examList = [];
+        var _$examCheckboxes = _$form[0].querySelectorAll("input[name='exam']:checked");
+        if (_$examCheckboxes) {
+            for (var examIndex = 0; examIndex < _$examCheckboxes.length; examIndex++) {
+                var _$examCheckbox = $(_$examCheckboxes[examIndex]);
+                Paper.examList.push(_$examCheckbox.val());
+            }
+        }
         _PaperService.update(Paper).done(function () {
             _$modal.modal('hide');
             abp.notify.info('保存成功!');

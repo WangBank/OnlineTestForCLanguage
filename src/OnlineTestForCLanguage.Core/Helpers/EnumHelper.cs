@@ -45,7 +45,7 @@ namespace OnlineTestForCLanguage.Helpers
                 }
                 return e.ToString();
             }
-            catch
+            catch(Exception ex)
             {
                 return "";
             }

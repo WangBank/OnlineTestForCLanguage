@@ -16,6 +16,8 @@ namespace OnlineTestForCLanguage.Sessions.Dto
         public bool IsDeleted { get; set; }
         public decimal Score { get; set; }
         public long CreateUserId { get; set; }
+        public string CreateUserName { get; set; }
+        public List<long> ExamList { get; set; }
         public virtual ICollection<PaperDetailDto> PaperDetails { get; set; }
     }
 

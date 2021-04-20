@@ -11,7 +11,10 @@
     <div class="modal-body">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Paper-details">s试卷明细</a>
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#edit-Paper-details">试卷明细</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" role="tab" href="#edit-Exam-details">考题列表</a>
             </li>
         </ul>
         <div class="tab-content mt-4">
@@ -22,7 +25,22 @@
                         <input id="Title" type="text" class="form-control" name="Title" value="@Model.Paper.Title" required minlength="2">
                     </div>
                 </div>
-
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">试卷总分</label>
+                    <div class="col-md-9">
+                        <input type="text" name="Score" value="@Model.Paper.Score" class="form-control" required maxlength="80">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane container" id="edit-Exam-details">
+                <div class="row">
+                    @foreach (var exam in Model.Exams)
+                    {
+                <div class="col-md-6">
+                    <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
+                    <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+                </div>}
+                </div>
             </div>
         </div>
     </div>

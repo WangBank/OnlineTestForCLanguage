@@ -31,7 +31,7 @@ namespace OnlineTestForCLanguage.Papers
     [Table("PaperDetails")]
     public class PaperDetail : Entity<long>, ISoftDelete
     {
-        public long PaperId { get; set; }
+        public virtual long PaperId { get; set; }
         [ForeignKey("PaperId")]
         public Paper Paper { get; set; }
         public long ExamId { get; set; }

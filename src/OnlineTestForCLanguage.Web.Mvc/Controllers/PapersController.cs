@@ -35,8 +35,10 @@ namespace OnlineTestForCLanguage.Web.Controllers
         }
         public async Task<ActionResult> EditModal(long PaperId)
         {
-            var Paper = await _PaperAppService.GetAsync(new PaperDto { Id =PaperId});
+            var Paper = await _PaperAppService.GetAsync(new EntityDto<long> { Id = PaperId});
             var model = new EditPaperModalViewModel();
+            var exams = await _ExamsAppService.GetAllAsync(new PagedExamResultRequestDto());
+            model.Exams = exams.Items;
             model.Paper = Paper;
             return PartialView("_EditModal", model);
         }

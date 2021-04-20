@@ -57,11 +57,16 @@
             },
             {
                 targets: 4,
-                data: 'creationUser',
+                data: 'createUserId',
                 sortable: false,
             },
             {
                 targets: 5,
+                data: 'createUserName',
+                sortable: false,
+            },
+            {
+                targets: 6,
                 data: null,
                 sortable: false,
                 autoWidth: false,
@@ -97,12 +102,12 @@
         }
 
         var Paper = _$form.serializeFormToObject();
-        Paper.paperDetails = [];
+        Paper.examList = [];
         var _$examCheckboxes = _$form[0].querySelectorAll("input[name='exam']:checked");
         if (_$examCheckboxes) {
             for (var examIndex = 0; examIndex < _$examCheckboxes.length; examIndex++) {
                 var _$examCheckbox = $(_$examCheckboxes[examIndex]);
-                Paper.paperDetails.push(_$examCheckbox.val());
+                Paper.examList.push(_$examCheckbox.val());
             }
         }
         abp.ui.setBusy(_$modal);

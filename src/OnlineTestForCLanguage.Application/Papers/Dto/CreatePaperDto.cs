@@ -1,4 +1,5 @@
-﻿using Abp.AutoMapper;
+﻿using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Runtime.Validation;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,11 @@ namespace OnlineTestForCLanguage.Papers.Dto
         public bool IsDeleted { get; set; }
         public decimal Score { get; set; }
         public long CreateUserId { get; set; }
-       public List<long> paperDetails { get; set; }
+        public List<long> ExamList { get; set; }
         public void Normalize()
         {
             IsDeleted = false;
         }
     }
+
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineTestForCLanguage.EntityFrameworkCore;
 
 namespace OnlineTestForCLanguage.Migrations
 {
     [DbContext(typeof(OnlineTestForCLanguageDbContext))]
-    partial class OnlineTestForCLanguageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210420090923_addNewTable")]
+    partial class addNewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
