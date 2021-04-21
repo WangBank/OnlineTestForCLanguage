@@ -5,6 +5,7 @@ using OnlineTestForCLanguage.Authorization;
 using OnlineTestForCLanguage.Controllers;
 using OnlineTestForCLanguage.Tests.Dto;
 using OnlineTestForCLanguage.Sessions;
+using OnlineTestForCLanguage.Papers.Dto;
 using OnlineTestForCLanguage.Sessions.Dto;
 using OnlineTestForCLanguage.Web.Models.Tests;
 using System;
@@ -18,26 +19,38 @@ namespace OnlineTestForCLanguage.Web.Controllers
     public class TestsController : OnlineTestForCLanguageControllerBase
     {
         private readonly ITestsAppService _TestAppService;
-
-        public TestsController(ITestsAppService TestAppService)
+        private readonly IPapersAppService _PaperAppService;
+        public TestsController(ITestsAppService TestAppService, IPapersAppService PaperAppService)
         {
             _TestAppService = TestAppService;
+            _PaperAppService = PaperAppService;
         }
 
-        public async Task<ActionResult> Index(PagedTestResultRequestDto input)
+        public async Task<ActionResult> Index()
         {
-            var output = await _TestAppService.GetAllAsync(input);
+            var output = await _PaperAppService.GetAllAsync(new PagedPaperResultRequestDto());
             var model = new IndexViewModel(output.Items);
             return View(model);
         }
-
-
         public async Task<ActionResult> EditModal(long TestId)
         {
             var Test = await _TestAppService.GetAsync(new EntityDto<long>(TestId));
+            var output = await _PaperAppService.GetAllAsync(new PagedPaperResultRequestDto());
             var model = new EditTestModalViewModel();
             model.Test = Test;
+            model.Papers = output.Items;
             return PartialView("_EditModal", model);
+        }
+
+
+        public async Task<ActionResult> StartModal(long TestId)
+        {
+            var Test = await _TestAppService.GetAsync(new EntityDto<long>(TestId));
+            var output = await _PaperAppService.GetAllAsync(new PagedPaperResultRequestDto());
+            var model = new EditTestModalViewModel();
+            model.Test = Test;
+            model.Papers = output.Items;
+            return PartialView("_StartModal", model);
         }
     }
 }

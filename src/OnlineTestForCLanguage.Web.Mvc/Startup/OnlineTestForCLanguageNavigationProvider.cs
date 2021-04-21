@@ -73,6 +73,15 @@ namespace OnlineTestForCLanguage.Web.Startup
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Tests)
                     )
                 )
+               .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.TestCounts,
+                        L("TestCounts"),
+                        url: "TestCounts",
+                        icon: "fas fa-vials",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_TestCounts)
+                    )
+                )
                 //.AddItem(
                 //    new MenuItemDefinition(
                 //        PageNames.About,

@@ -8,18 +8,22 @@ using System.Threading.Tasks;
 
 namespace OnlineTestForCLanguage.Tests.Dto
 {
-    [AutoMapTo(typeof(Test))]
-    public class CreateTestDto : IShouldNormalize
+    [AutoMapTo(typeof(TestDetail))]
+    public class CreateTestCountDto : IShouldNormalize
     {
-        public string Title { get; set; }
-      
-        public DateTime BeginTime { get; set; }
-
-        public DateTime EndTime { get; set; }
-        public long CreaterUserId { get; set; }
-        public long PaperId { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }
+
+        public long StudentId { get; set; }
+        public long TestId { get; set; }
+        /// <summary>
+        /// 是否允许阅卷
+        /// </summary>
+        public bool IsInspected { get; set; }
+        /// <summary>
+        /// 学生总分
+        /// </summary>
+        public decimal StudentScoreSum { get; set; }
 
         public void Normalize()
         {

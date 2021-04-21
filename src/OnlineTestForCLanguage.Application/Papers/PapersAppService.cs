@@ -121,9 +121,9 @@ namespace OnlineTestForCLanguage.Sessions
             return paperDto;
         }
 
-        public async Task DeleteAsync(long id)
+        public override async Task DeleteAsync(EntityDto<long> input)
         {
-            var Paper = await _PaperRepository.FirstOrDefaultAsync(id);
+            var Paper = await _PaperRepository.FirstOrDefaultAsync(input.Id);
             await _PaperRepository.DeleteAsync(Paper);
         }
     }

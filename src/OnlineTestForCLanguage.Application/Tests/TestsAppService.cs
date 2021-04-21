@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
@@ -12,16 +13,19 @@ using OnlineTestForCLanguage.Authorization;
 using OnlineTestForCLanguage.Tests;
 using OnlineTestForCLanguage.Tests.Dto;
 using OnlineTestForCLanguage.Sessions.Dto;
+using OnlineTestForCLanguage.Authorization.Users;
 
 namespace OnlineTestForCLanguage.Sessions
 {
     [AbpAuthorize(PermissionNames.Pages_Tests)]
     public class TestsAppService : AsyncCrudAppService<Test, TestDto, long, PagedTestResultRequestDto,CreateTestDto,TestDto>, ITestsAppService
     {
+        private readonly UserManager _userManager;
         private readonly IRepository<Test, long> _TestRepository;
-        public TestsAppService(IRepository<Test, long> TestRepository) : base(TestRepository)
+        public TestsAppService(IRepository<Test, long> TestRepository, UserManager userManager) : base(TestRepository)
         {
-            _TestRepository = TestRepository;
+            _userManager = userManager;
+               _TestRepository = TestRepository;
         }
         public async Task<ListResultDto<TestDto>> GetTestsAsync(PagedTestResultRequestDto input)
         {
@@ -29,19 +33,18 @@ namespace OnlineTestForCLanguage.Sessions
             Tests.Items = Tests.Items.OrderBy(e=>e.Id).ToList();
             return Tests;
         }
-
         public override async Task<TestDto> CreateAsync(CreateTestDto input)
         {
             CheckCreatePermission();
 
-            var Test = ObjectMapper.Map<Test>(input);
+            var entity = MapToEntity(input);
 
-          
-            await _TestRepository.InsertOrUpdateAsync(Test);
+
+            await _TestRepository.InsertOrUpdateAsync(entity);
 
             CurrentUnitOfWork.SaveChanges();
 
-            return MapToEntityDto(Test);
+            return MapToEntityDto(entity);
         }
 
         public override async Task<TestDto> UpdateAsync(TestDto input)
@@ -61,14 +64,44 @@ namespace OnlineTestForCLanguage.Sessions
             entity.BeginTime = input.BeginTime;
             entity.EndTime = input.EndTime;
             entity.PaperId = input.PaperId;
-            entity.TotalPoints = input.TotalPoints;
+        }
+        protected override TestDto MapToEntityDto(Test test)
+        {
+            var testDto = new TestDto
+            {
+                CreaterUserId = test.CreaterUserId,
+                CreateUserName = _userManager.GetUserById(test.CreaterUserId).UserName,
+                CreationTime = test.CreationTime,
+                BeginTime = test.BeginTime,
+                EndTime = test.EndTime,
+                PaperId = test.PaperId,
+                Id = test.Id,
+                IsDeleted = test.IsDeleted,
+                Title = test.Title,
+            };
+            return testDto;
         }
 
-
-        public async Task DeleteAsync(long id)
+        protected override Test MapToEntity(CreateTestDto createInput)
         {
-            var Test = await _TestRepository.FirstOrDefaultAsync(id);
-            await _TestRepository.DeleteAsync(Test);
+
+            var result = new Test
+            {
+                BeginTime = createInput.BeginTime,
+                CreaterUserId = AbpSession.UserId.Value,
+                CreationTime = DateTime.Now,
+                IsDeleted = false,
+                Title = createInput.Title,
+                EndTime = createInput.EndTime,
+                PaperId = createInput.PaperId
+            };
+
+            return result;
+        }
+        public override async Task DeleteAsync(EntityDto<long> input)
+        {
+            var test = await _TestRepository.FirstOrDefaultAsync(input.Id);
+            await _TestRepository.DeleteAsync(test);
         }
     }
 }

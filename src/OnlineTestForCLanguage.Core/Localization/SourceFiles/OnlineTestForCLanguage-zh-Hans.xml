@@ -6,6 +6,7 @@
     <text name="Exams" value="考题管理" />
     <text name="Papers" value="试卷管理" />
     <text name="Tests" value="考试管理" />
+    <text name="TestCounts" value="考试统计" />
     <text name="WelcomeMessage" value="欢迎使用 OnlineTestForCLanguage!" />
     <text name="FormIsNotValidMessage" value="部分输入信息不符合要求，请检查并改正.." />
     <text name="TenantNameCanNotBeEmpty" value="租户名不能为空" />

@@ -1,19 +1,19 @@
 ﻿(function ($) {
-    var _TestService = abp.services.app.tests,
-        _$modal = $('#TestCreateModal'),
+    var _TestCountService = abp.services.app.testCounts,
+        _$modal = $('#TestCountCreateModal'),
         _$form = _$modal.find('form'),
-        _$table = $('#TestsTable');
+        _$table = $('#TestCountsTable');
 
-    var _$TestsTable = _$table.DataTable({
+    var _$TestCountsTable = _$table.DataTable({
         paging: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
-            var filter = $('#TestsSearchForm').serializeFormToObject(true);
+            var filter = $('#TestCountsSearchForm').serializeFormToObject(true);
             filter.maxResultCount = data.length;
             filter.skipCount = data.start;
 
             abp.ui.setBusy(_$table);
-            _TestService.getTests(filter).done(function (result) {
+            _TestCountService.getTestCounts(filter).done(function (result) {
                 callback({
                     recordsTotal: result.totalCount,
                     recordsFiltered: result.totalCount,
@@ -27,7 +27,7 @@
             {
                 name: 'refresh',
                 text: '<i class="fas fa-redo-alt"></i>',
-                action: () => _$TestsTable.draw(false)
+                action: () => _$TestCountsTable.draw(false)
             }
         ],
         responsive: {
@@ -43,50 +43,62 @@
             },
             {
                 targets: 1,
-                data: 'title',
-                sortable: false,
+                data: 'studentId',
+                sortable: false
             },
             {
                 targets: 2,
-                data: 'beginTime',
-                sortable: true,
+                data: '',
+                sortable: false
             },
             {
                 targets: 3,
-                data: 'endTime',
-                sortable: false,
+                data: '',
+                sortable: false
             },
             {
                 targets: 4,
-                data: 'creationTime',
+                data: '',
                 sortable: false,
             },
             {
                 targets: 5,
-                data: 'createrUserId',
+                data: '',
                 sortable: false,
             },
             {
                 targets: 6,
-                data: 'createUserName',
+                data: '',
+                sortable: false
+            },
+            {
+                targets:7,
+                data: '',
+                sortable: false
+            },
+            {
+                targets: 8,
+                data: '',
                 sortable: false,
             },
             {
-                targets: 7,
+                targets: 9,
+                data: '',
+                sortable: false,
+            },
+            {
+                targets: 6,
                 data: null,
                 sortable: false,
                 autoWidth: false,
                 defaultContent: '',
                 render: (data, type, row, meta) => {
                     return [
-                        `   <button type="button" class="btn btn-sm bg-secondary edit-Test" data-Test-id="${row.id}" data-toggle="modal" data-target="#TestEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> 编辑`,
+                        `   <button type="button" class="btn btn-sm bg-secondary edit-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountEditModal">`,
+                        `       <i class="fas fa-pencil-alt"></i> Edit`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-danger delete-Test" data-Test-id="${row.id}" data-Test-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> 删除`,
-                        '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-blue start-Test" data-Test-id="${row.id}" data-toggle="modal" data-target="#TestStartModal">`,
-                        `       <i class="fas fa-trash"></i> 开始考试`,
+                        `   <button type="button" class="btn btn-sm bg-danger delete-TestCount" data-TestCount-id="${row.id}" data-TestCount-name="${row.name}">`,
+                        `       <i class="fas fa-trash"></i> Delete`,
                         '   </button>'
                     ].join('');
                 }
@@ -110,80 +122,65 @@
             return;
         }
 
-        var Test = _$form.serializeFormToObject();
+        var TestCount = _$form.serializeFormToObject();
         abp.ui.setBusy(_$modal);
-        _TestService.create(Test).done(function () {
+        _TestCountService.create(TestCount).done(function () {
             _$modal.modal('hide');
             _$form[0].reset();
-            abp.notify.info('新增试卷成功!');
-            _$TestsTable.ajax.reload();
+            abp.notify.info('新增考题成功!');
+            _$TestCountsTable.ajax.reload();
         }).always(function () {
             abp.ui.clearBusy(_$modal);
         });
     });
 
-    $(document).on('click', '.delete-Test', function () {
-        var TestId = $(this).attr("data-Test-id");
-        var TestName = $(this).attr('data-Test-name');
+    $(document).on('click', '.delete-TestCount', function () {
+        var TestCountId = $(this).attr("data-TestCount-id");
+        var TestCountName = $(this).attr('data-TestCount-name');
 
-        deleteTest(TestId, TestName);
+        deleteTestCount(TestCountId, TestCountName);
     });
 
-    function deleteTest(TestId, TestName) {
+    function deleteTestCount(TestCountId, TestCountName) {
         abp.message.confirm(
             abp.utils.formatString(
                '是否删除?',
-                TestName),
+                TestCountName),
             null,
             (isConfirmed) => {
                 if (isConfirmed) {
-                    _TestService.delete({
-                        id: TestId
+                    _TestCountService.delete({
+                        id: TestCountId
                     }).done(() => {
                         abp.notify.info('删除成功！');
-                        _$TestsTable.ajax.reload();
+                        _$TestCountsTable.ajax.reload();
                     });
                 }
             }
         );
     }
 
-    $(document).on('click', '.edit-Test', function (e) {
-        var TestId = $(this).attr("data-Test-id");
+    $(document).on('click', '.edit-TestCount', function (e) {
+        var TestCountId = $(this).attr("data-TestCount-id");
 
         e.preventDefault();
         abp.ajax({
-            url: abp.appPath + 'Tests/EditModal?TestId=' + TestId,
+            url: abp.appPath + 'TestCounts/EditModal?TestCountId=' + TestCountId,
             type: 'POST',
             dataType: 'html',
             success: function (content) {
-                $('#TestEditModal div.modal-content').html(content);
+                $('#TestCountEditModal div.modal-content').html(content);
             },
             error: function (e) { }
         });
     });
 
-
-    $(document).on('click', '.start-Test', function (e) {
-        var TestId = $(this).attr("data-Test-id");
-        e.preventDefault();
-        abp.ajax({
-            url: abp.appPath + 'Tests/StartModal?TestId=' + TestId,
-            type: 'POST',
-            dataType: 'html',
-            success: function (content) {
-                $('#TestStartModal div.modal-content').html(content);
-            },
-            error: function (e) { }
-        });
+    $(document).on('click', 'a[data-target="#TestCountCreateModal"]', (e) => {
+        $('.nav-tabs a[href="#TestCount-details"]').tab('show')
     });
 
-    $(document).on('click', 'a[data-target="#TestCreateModal"]', (e) => {
-        $('.nav-tabs a[href="#Test-details"]').tab('show')
-    });
-
-    abp.event.on('Test.edited', (data) => {
-        _$TestsTable.ajax.reload();
+    abp.event.on('TestCount.edited', (data) => {
+        _$TestCountsTable.ajax.reload();
     });
 
     _$modal.on('shown.bs.modal', () => {
@@ -193,12 +190,12 @@
     });
 
     $('.btn-search').on('click', (e) => {
-        _$TestsTable.ajax.reload();
+        _$TestCountsTable.ajax.reload();
     });
 
     $('.txt-search').on('keypress', (e) => {
         if (e.which === 13) {
-            _$TestsTable.ajax.reload();
+            _$TestCountsTable.ajax.reload();
             return false;
         }
     });

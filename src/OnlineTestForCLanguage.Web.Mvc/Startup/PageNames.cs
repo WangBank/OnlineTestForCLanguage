@@ -10,5 +10,6 @@
         public const string Exams = "Exams";
         public const string Papers = "Papers";
         public const string Tests = "Tests";
+        public const string TestCounts = "TestCounts";
     }
 }

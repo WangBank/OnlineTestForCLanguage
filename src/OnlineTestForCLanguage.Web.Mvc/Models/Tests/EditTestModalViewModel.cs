@@ -9,5 +9,12 @@ namespace OnlineTestForCLanguage.Web.Models.Tests
     public class EditTestModalViewModel
     {
         public TestDto Test { get; set; }
+
+        public IReadOnlyList<PaperDto> Papers { get; set; }
+
+        public bool PaperIsInDetail(PaperDto paper)
+        {
+            return Test.PaperId == paper.Id;
+        }
     }
 }

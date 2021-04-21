@@ -14,12 +14,11 @@ namespace OnlineTestForCLanguage.Sessions.Dto
 
         public string Title { get; set; }
 
-        public decimal TotalPoints { get; set; }
-
         public DateTime BeginTime { get; set; }
 
         public DateTime EndTime { get; set; }
         public long CreaterUserId { get; set; }
+        public string CreateUserName { get; set; }
         public long PaperId { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }

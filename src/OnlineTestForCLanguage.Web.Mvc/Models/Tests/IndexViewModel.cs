@@ -8,11 +8,11 @@ namespace OnlineTestForCLanguage.Web.Models.Tests
 {
     public class IndexViewModel
     {
-        public IReadOnlyList<TestDto> Tests { get; }
+        public IReadOnlyList<PaperDto> Papers { get; }
 
-        public IndexViewModel(IReadOnlyList<TestDto> _Tests)
+        public IndexViewModel(IReadOnlyList<PaperDto> _Papers)
         {
-            Tests = _Tests;
+            Papers = _Papers;
         }
     }
 }

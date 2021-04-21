@@ -16,11 +16,6 @@ namespace OnlineTestForCLanguage.Tests
     {
         public string Title { get; set; }
         /// <summary>
-        /// 分数
-        /// </summary>
-        public decimal TotalPoints { get; set; }
-
-        /// <summary>
         /// 考试开始时间
         /// </summary>
         public DateTime BeginTime { get; set; }

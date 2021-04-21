@@ -11,7 +11,10 @@
     <div class="modal-body">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Test-details">s考试明细</a>
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#edit-Test-details">考试明细</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" role="tab" href="#edit-Paper-details">试卷信息</a>
             </li>
         </ul>
         <div class="tab-content mt-4">
@@ -22,7 +25,29 @@
                         <input id="Title" type="text" class="form-control" name="Title" value="@Model.Test.Title" required minlength="2">
                     </div>
                 </div>
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">考试开始时间</label>
+                    <div class="col-md-9">
+                        <input type="datetime-local" name="BeginTime" value="@Model.Test.BeginTime.ToString("yyyy-MM-ddTHH:mm")" class="form-control" placeholder="请选择开始时间">
+                    </div>
+                </div>
 
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">考试结束时间</label>
+                    <div class="col-md-9">
+                        <input type="datetime-local" name="EndTime" value="@Model.Test.EndTime.ToString("yyyy-MM-ddTHH:mm")" class="form-control" placeholder="请选择结束时间">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane container" id="edit-Paper-details">
+                <div class="row">
+                    @foreach (var paper in Model.Papers)
+                    {
+        <div class="col-md-12">
+            <input type="radio" name="PaperId" id="paper-@paper.Id" value="@paper.Id" title="@paper.Title" @(Model.PaperIsInDetail(paper) ? "checked" : "")/>
+            <label for="paper-@paper.Id" title="@paper.Title">试卷介绍:@paper.Title,分数:@paper.Score,考试教师:@paper.CreateUserName</label>
+        </div>}
+                </div>
             </div>
         </div>
     </div>

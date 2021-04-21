@@ -11,21 +11,46 @@
                 <div class="modal-body">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Test-details">试卷明细</a>
+                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Test-details">考试信息</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" role="tab" href="#create-Paper-details">试卷信息</a>
                         </li>
                     </ul>
                     <div class="tab-content mt-4">
                         <div role="tabpanel" class="tab-pane container active" id="create-Test-details">
-                          
+
                             <div class="form-group row required">
                                 <label class="col-md-3 col-form-label">标题</label>
                                 <div class="col-md-9">
                                     <input type="text" name="Title" class="form-control" required maxlength="80">
                                 </div>
                             </div>
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">考试开始时间</label>
+                                <div class="col-md-9">
+                                    <input type="datetime-local" name="BeginTime" class="form-control" placeholder="请选择开始时间">
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">考试结束时间</label>
+                                <div class="col-md-9">
+                                    <input type="datetime-local" name="EndTime" class="form-control" placeholder="请选择结束时间">
+                                </div>
+                            </div>
 
                         </div>
-                        
+                        <div class="tab-pane container" id="create-Paper-details">
+                            <div class="row">
+                                @foreach (var paper in Model.Papers)
+                                {
+                        <div class="col-md-12">
+                            <input type="radio" name="PaperId" id="paper-@paper.Id" value="@paper.Id" title="@paper.Title" />
+                            <label for="paper-@paper.Id" title="@paper.Title">试卷介绍:@paper.Title,分数:@paper.Score,考试教师:@paper.CreateUserName</label>
+                        </div>}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")

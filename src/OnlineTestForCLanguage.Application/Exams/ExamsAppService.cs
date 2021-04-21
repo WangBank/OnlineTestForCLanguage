@@ -66,10 +66,9 @@ namespace OnlineTestForCLanguage.Sessions
             entity.ExamType = input.ExamType;
         }
 
-
-        public  async Task DeleteAsync(long id)
+        public override async Task DeleteAsync(EntityDto<long> input)
         {
-            var exam = await _examRepository.FirstOrDefaultAsync(id);
+            var exam = await _examRepository.FirstOrDefaultAsync(input.Id);
             await _examRepository.DeleteAsync(exam);
         }
     }
