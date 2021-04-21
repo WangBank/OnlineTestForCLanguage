@@ -17,7 +17,7 @@ using OnlineTestForCLanguage.Authorization.Users;
 
 namespace OnlineTestForCLanguage.Sessions
 {
-    [AbpAuthorize(PermissionNames.Pages_Tests)]
+    [AbpAuthorize(PermissionNames.Pages_Exams, PermissionNames.Pages_Papers, PermissionNames.Pages_TestCounts, PermissionNames.Pages_Tests)]
     public class TestsAppService : AsyncCrudAppService<Test, TestDto, long, PagedTestResultRequestDto,CreateTestDto,TestDto>, ITestsAppService
     {
         private readonly UserManager _userManager;

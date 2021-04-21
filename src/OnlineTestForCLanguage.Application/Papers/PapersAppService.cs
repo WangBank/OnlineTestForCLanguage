@@ -16,7 +16,7 @@ using OnlineTestForCLanguage.Sessions.Dto;
 using OnlineTestForCLanguage.Authorization.Users;
 namespace OnlineTestForCLanguage.Sessions
 {
-    [AbpAuthorize(PermissionNames.Pages_Papers)]
+    [AbpAuthorize(PermissionNames.Pages_Exams, PermissionNames.Pages_Papers, PermissionNames.Pages_TestCounts, PermissionNames.Pages_Tests)]
     public class PapersAppService : AsyncCrudAppService<Paper, PaperDto, long,PagedPaperResultRequestDto,CreatePaperDto,PaperDto>, IPapersAppService
     {
         private readonly IRepository<Paper,long> _PaperRepository;

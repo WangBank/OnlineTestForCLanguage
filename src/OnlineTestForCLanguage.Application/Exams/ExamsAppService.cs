@@ -15,7 +15,7 @@ using OnlineTestForCLanguage.Sessions.Dto;
 
 namespace OnlineTestForCLanguage.Sessions
 {
-    [AbpAuthorize(PermissionNames.Pages_Exams)]
+    [AbpAuthorize(PermissionNames.Pages_Exams, PermissionNames.Pages_Papers, PermissionNames.Pages_TestCounts, PermissionNames.Pages_Tests)]
     public class ExamsAppService : AsyncCrudAppService<Exam, ExamDto, long,PagedExamResultRequestDto,CreateExamDto,ExamDto>, IExamsAppService
     {
         private readonly IRepository<Exam, long> _examRepository;

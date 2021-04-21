@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace OnlineTestForCLanguage.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Exams)]
+    [AbpMvcAuthorize(PermissionNames.Pages_Exams, PermissionNames.Pages_Papers, PermissionNames.Pages_TestCounts, PermissionNames.Pages_Tests)]
     public class ExamsController : OnlineTestForCLanguageControllerBase
     {
         private readonly IExamsAppService _examAppService;
