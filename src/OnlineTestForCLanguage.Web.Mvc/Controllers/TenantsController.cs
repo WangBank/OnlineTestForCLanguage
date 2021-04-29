@@ -8,7 +8,6 @@ using OnlineTestForCLanguage.MultiTenancy;
 
 namespace OnlineTestForCLanguage.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Tenants)]
     public class TenantsController : OnlineTestForCLanguageControllerBase
     {
         private readonly ITenantAppService _tenantAppService;

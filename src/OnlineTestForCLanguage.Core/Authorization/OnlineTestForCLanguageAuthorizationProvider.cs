@@ -15,7 +15,7 @@ namespace OnlineTestForCLanguage.Authorization
             context.CreatePermission(PermissionNames.Pages_Tests, L("Tests"));
             context.CreatePermission(PermissionNames.Pages_TestCounts, L("TestCounts"));
             context.CreatePermission(PermissionNames.Pages_Roles, L("Roles"));
-            context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
+            
         }
 
         private static ILocalizableString L(string name)

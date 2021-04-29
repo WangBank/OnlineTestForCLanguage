@@ -34,7 +34,7 @@ namespace OnlineTestForCLanguage.Sessions
         {
             CheckCreatePermission();
 
-            var exam = ObjectMapper.Map<Exam>(input);
+            var exam = MapToEntity(input);
 
           
             await _examRepository.InsertOrUpdateAsync(exam);
@@ -43,7 +43,30 @@ namespace OnlineTestForCLanguage.Sessions
 
             return MapToEntityDto(exam);
         }
+        protected override Exam MapToEntity(CreateExamDto createInput)
+        {
 
+            var result = new Exam
+            {
+               Score = createInput.Score,
+               Content = createInput.Content,
+               CorrectDetailIds = createInput.CorrectAnswerId,
+               CreationTime = createInput.CreationTime,
+               Difficulty = createInput.Difficulty,
+               ExamDetails = createInput.answers.Select(e=>new ExamDetail { 
+                Content = e.Content,
+                CreationTime = createInput.CreationTime,
+                IsDeleted = false,
+                AnswerId = e.AnswerId,
+               }).ToList(),
+               ExamType = createInput.ExamType,
+               Explain = createInput.Explain,
+               IsDeleted = false,
+               Title = createInput.Title
+            };
+
+            return result;
+        }
         public override async Task<ExamDto> UpdateAsync(ExamDto input)
         {
             CheckUpdatePermission();

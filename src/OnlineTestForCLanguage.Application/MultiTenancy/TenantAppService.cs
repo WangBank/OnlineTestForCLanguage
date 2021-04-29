@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace OnlineTestForCLanguage.MultiTenancy
 {
-    [AbpAuthorize(PermissionNames.Pages_Tenants)]
     public class TenantAppService : AsyncCrudAppService<Tenant, TenantDto, int, PagedTenantResultRequestDto, CreateTenantDto, TenantDto>, ITenantAppService
     {
         private readonly TenantManager _tenantManager;

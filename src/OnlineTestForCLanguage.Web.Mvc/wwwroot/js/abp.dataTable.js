@@ -8,7 +8,7 @@
     var l = abp.localization.getSource("OnlineTestForCLanguage");
 
     var language = {
-        emptyTable: "No data available in table",
+        emptyTable: "没有数据,请添加后重试",
         info: "_START_-_END_ of _TOTAL_ items",
         infoEmpty: "No records",
         infoFiltered: "(filtered from _MAX_ total entries)",

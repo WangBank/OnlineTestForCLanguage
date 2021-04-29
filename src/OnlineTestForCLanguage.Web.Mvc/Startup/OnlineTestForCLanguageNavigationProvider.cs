@@ -43,11 +43,6 @@ namespace OnlineTestForCLanguage.Web.Startup
                 )
                 .AddItem(
                     new MenuItemDefinition(
-                        //PageNames.Tenants,
-                        //L("Tenants"),
-                        //url: "Tenants",
-                        //icon: "fas fa-building",
-                        //permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Tenants)
                         PageNames.Exams,
                         L("Exams"),
                         url: "Exams",

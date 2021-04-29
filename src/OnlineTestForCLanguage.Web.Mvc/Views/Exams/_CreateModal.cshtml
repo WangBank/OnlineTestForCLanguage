@@ -30,7 +30,7 @@
                             <div class="form-group row required">
                                 <label class="col-md-3 col-form-label">考题类型</label>
                                 <div class="col-md-9">
-                                    <select class="form-control" name="ExamType" required>
+                                    <select class="form-control" id="ExamType" name="ExamType" required>
                                         <option value="0">单选题</option>
                                         <option value="1">多选题</option>
                                         <option value="2">判断题</option>
@@ -42,13 +42,56 @@
                             <div class="form-group row required">
                                 <label class="col-md-3 col-form-label">标题</label>
                                 <div class="col-md-9">
-                                    <input type="text" name="Title" class="form-control" required maxlength="80">
+                                    <input type="text" name="Title" id="Title" class="form-control" required maxlength="80">
                                 </div>
                             </div>
                             <div class="form-group row required">
                                 <label class="col-md-3 col-form-label">考题内容</label>
                                 <div class="col-md-9">
-                                    <input type="text" name="Content" class="form-control" required maxlength="4000">
+                                    <textarea name="Content" id="Content" class="form-control" required maxlength="200"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">答案</label>
+                                <div class="col-md-9" id="examContent">
+                                    <table class="col-md-12">
+                                        <tr align="center">
+                                            <td width="15%">是否答案</td>
+                                            <td>答案内容</td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><input type="radio" id='answerid0' name="answerName" /></td>
+                                            <td><input type="text" name="AnswerContent" class="form-control" required maxlength="80"></td>
+                                        </tr>
+                                        <tr align="center">
+                                            <td><input type="radio" id='answerid1' name="answerName" /></td>
+                                            <td> <input type="text" name="AnswerContent" class="form-control" required maxlength="80"></td>
+
+                                        </tr>
+                                        <tr align="center">
+                                            <td><input type="radio" id='answerid2' name="answerName" /></td>
+                                            <td> <input type="text" name="AnswerContent" class="form-control" required maxlength="80"></td>
+
+                                        </tr>
+                                        <tr align="center">
+                                            <td><input type="radio" id='answerid3' name="answerName" /></td>
+                                            <td> <input type="text" name="AnswerContent" class="form-control" required maxlength="80"></td>
+
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">解析</label>
+                                <div class="col-md-9">
+                                    <textarea name="Explain" class="form-control" id="Explain" maxlength="200"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">考题分数</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="score" value="5" name="score" class="form-control" maxlength="80" readonly>
                                 </div>
                             </div>
 

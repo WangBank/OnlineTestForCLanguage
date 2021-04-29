@@ -153,7 +153,7 @@ namespace OnlineTestForCLanguage.Users
 
             var userDto = base.MapToEntityDto(user);
             userDto.RoleNames = roles.ToArray();
-
+            userDto.FullName = userDto.Surname + userDto.Name;
             return userDto;
         }
 
@@ -225,12 +225,6 @@ namespace OnlineTestForCLanguage.Users
             {
                 return false;
             }
-            var roles = await _userManager.GetRolesAsync(currentUser);
-            if (!roles.Contains(StaticRoleNames.Tenants.Admin))
-            {
-                throw new UserFriendlyException("Only administrators may reset passwords.");
-            }
-
             var user = await _userManager.GetUserByIdAsync(input.UserId);
             if (user != null)
             {

@@ -31,7 +31,7 @@
             <label class="col-md-3 col-form-label">@L("Permissions")</label>
             <div class="col-md-9">
                 <div class="row">
-                    @foreach (var permission in Model.Permissions)
+                    @foreach (var permission in Model.Permissions.Where(s=>s.Name != "Tenants"))
                     {
                         <div class="col-md-6">
                             <input type="checkbox" name="permission" value="@permission.Name" id="@($"permission{permission.Name}")" @(Model.HasPermission(permission) ? "checked" : "") @(Model.Role.IsStatic ? "disabled" : "") />

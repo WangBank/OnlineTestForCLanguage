@@ -58,7 +58,7 @@ namespace OnlineTestForCLanguage.Web.Startup
 
             services.AddScoped<IWebResourceManager, WebResourceManager>();
 
-            services.AddSignalR();
+            //services.AddSignalR();
             var baselocation = AppContext.BaseDirectory;
             services.AddLogDashboard(opt =>
             {
@@ -98,7 +98,7 @@ namespace OnlineTestForCLanguage.Web.Startup
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<AbpCommonHub>("/signalr");
+               // endpoints.MapHub<AbpCommonHub>("/signalr");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
             });

@@ -32,6 +32,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
         public async Task<ActionResult> EditModal(long userId)
         {
             var user = await _userAppService.GetAsync(new EntityDto<long>(userId));
+            
             var roles = (await _userAppService.GetRoles()).Items;
             var model = new EditUserModalViewModel
             {

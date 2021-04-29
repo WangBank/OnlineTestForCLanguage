@@ -1,5 +1,4 @@
-﻿0@using Abp.Authorization.Users
-@using OnlineTestForCLanguage.Web.Models.Common.Modals
+﻿@using OnlineTestForCLanguage.Web.Models.Common.Modals
 @using OnlineTestForCLanguage.Web.Models.Exams
 @model EditExamModalViewModel
 @{
@@ -36,7 +35,7 @@
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">考题类型</label>
                     <div class="col-md-9">
-                        <select class="form-control" name="ExamType" required>
+                        <select class="form-control" name="ExamType" id="ExamType" required>
                             <option value="0">单选题</option>
                             <option value="1">多选题</option>
                             <option value="2">判断题</option>
@@ -46,12 +45,23 @@
                 </div>
 
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">考题内容</label>
-                    <div class="col-md-9">
+                    <label class="col-md-3 col-form-label">答案</label>
+                    <div class="col-md-9" id="examContent">
                         <input type="text" name="Content" class="form-control" value="@Model.Exam.Content" required maxlength="4000">
                     </div>
                 </div>
-
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">解析</label>
+                    <div class="col-md-9">
+                        <input type="text" name="Explain" class="form-control" required maxlength="80">
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">考题分数</label>
+                    <div class="col-md-9">
+                        <input type="text" id="score" value="@Model.Exam.Score" name="Title" class="form-control" maxlength="80" readonly>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
