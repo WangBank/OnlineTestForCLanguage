@@ -1,5 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using OnlineTestForCLanguage.Exams;
+using OnlineTestForCLanguage.Papers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,7 +24,9 @@ namespace OnlineTestForCLanguage.Tests
 
         public DateTime EndTime { get; set; }
         public long CreaterUserId { get; set; }
-        public long PaperId { get; set; }
+        public virtual long PaperId { get; set; }
+        [ForeignKey("PaperId")]
+        public virtual Paper Paper { get; set; }
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }
         public Test()
@@ -48,15 +52,23 @@ namespace OnlineTestForCLanguage.Tests
         }
 
         public long StudentId { get; set; }
-        public long TestId { get; set; }
+        public virtual long TestId { get; set; }
+        [ForeignKey("TestId")]
+        public virtual Test Test { get; set; }
         /// <summary>
         /// 是否允许阅卷
         /// </summary>
         public bool IsInspected { get; set; }
+
+        /// <summary>
+        /// 阅卷老师
+        /// </summary>
+        public long TeacherId { get; set; }
         /// <summary>
         /// 学生总分
         /// </summary>
         public decimal StudentScoreSum { get; set; }
+        public virtual ICollection<TestDetail_Exam> TestDetail_Exams { get; set; }
 
     }
 
@@ -77,13 +89,15 @@ namespace OnlineTestForCLanguage.Tests
         /// <summary>
         /// 哪场考试 哪个学生
         /// </summary>
-        public long TestDetailId { get; set; }
-
+        public virtual long TestDetailId { get; set; }
+        [ForeignKey("TestDetailId")]
+        public virtual TestDetail TestDetail { get; set; }
         /// <summary>
         /// 哪个题目
         /// </summary>
-        public long ExamId { get; set; }
-
+        public virtual long ExamId { get; set; }
+        [ForeignKey("ExamId")]
+        public virtual Exam Exam { get; set; }
         /// <summary>
         /// 得了多少分
         /// </summary>

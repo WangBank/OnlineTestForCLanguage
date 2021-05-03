@@ -22,16 +22,12 @@ namespace OnlineTestForCLanguage.Sessions
     {
         private readonly UserManager _userManager;
         private readonly IRepository<TestDetail, long> _TestCountRepository;
-        public TestCountsAppService(IRepository<TestDetail, long> TestCountRepository, UserManager userManager) : base(TestCountRepository)
+        private readonly IRepository<Test, long> _TestRepository;
+        public TestCountsAppService(IRepository<TestDetail, long> TestCountRepository, IRepository<Test, long> TestRepository, UserManager userManager) : base(TestCountRepository)
         {
             _userManager = userManager;
                _TestCountRepository = TestCountRepository;
-        }
-        public async Task<ListResultDto<TestCountDto>> GetTestCountsAsync(PagedTestCountResultRequestDto input)
-        {
-            var TestCounts = await GetAllAsync(input);
-            TestCounts.Items = TestCounts.Items.OrderBy(e=>e.Id).ToList();
-            return TestCounts;
+            _TestRepository = TestRepository;
         }
         public override async Task<TestCountDto> CreateAsync(CreateTestCountDto input)
         {
@@ -46,7 +42,47 @@ namespace OnlineTestForCLanguage.Sessions
 
             return MapToEntityDto(entity);
         }
+        public override async Task<PagedResultDto<TestCountDto>> GetAllAsync(PagedTestCountResultRequestDto input)
+        {
+            
+            var temp =await _TestCountRepository.GetAll().Include(t => t.Test).Take(input.MaxResultCount).Skip(input.SkipCount).OrderBy(t => t.Id).ToListAsync();
+            var result =  new PagedResultDto<TestCountDto> { 
+                Items = temp.Select(t=> MapToEntityDto(t)).ToList(),
+                TotalCount = _TestCountRepository.GetAll().Count(),
+            };
+            if (await _userManager.IsGrantedAsync(AbpSession.UserId.GetValueOrDefault(), PermissionNames.CanInspected))
+            {
+                var items = result.Items.ToList();
+                foreach (var item in items)
+                {
+                    if (!item.IsInspected)
+                    {
+                        item.CanInspect = true;
+                    }
+                    
+                }
+                result.Items = items;
+            }
 
+            return result;
+
+        }
+
+        public override async Task<TestCountDto> GetAsync(EntityDto<long> input)
+        {
+
+            var testCount = await _TestCountRepository.GetAll().Include(t=>t.Test).Include(t=>t.TestDetail_Exams).FirstOrDefaultAsync(t=>t.Id ==input.Id);
+            var result = MapToEntityDto(testCount);
+            return result;
+        }
+
+        public async Task<TestCountDto> GetInspectAsync(EntityDto<long> input)
+        {
+
+            var testCount = await _TestCountRepository.GetAll().Include(t => t.Test).Include(t => t.TestDetail_Exams.Where(z => z.Exam.ExamType == Exams.ExamType.ShortAnswer)).FirstOrDefaultAsync(t => t.Id == input.Id);
+            var result = MapToEntityDto(testCount);
+            return result;
+        }
         public override async Task<TestCountDto> UpdateAsync(TestCountDto input)
         {
             CheckUpdatePermission();
@@ -76,8 +112,27 @@ namespace OnlineTestForCLanguage.Sessions
                 TestId = TestCount.TestId,
                 Id = TestCount.Id,
                 IsDeleted = TestCount.IsDeleted,
+                StudentName = _userManager.GetUserById(TestCount.StudentId).UserName,
+                BeginTime = TestCount.Test.BeginTime,
+                EndTime = TestCount.Test.EndTime,
+                TeacherId = TestCount.TeacherId,
+                TeacherName = TestCount.TeacherId != -1 ?_userManager.GetUserById(TestCount.TeacherId).UserName: null,
+                TestTitle = TestCount.Test.Title
 
             };
+            if (TestCount.TestDetail_Exams != null && TestCount.TestDetail_Exams.Count != 0)
+            {
+                TestCountDto.detail_Exams = TestCount.TestDetail_Exams.Select(
+                    t =>
+                    new TestDetail_ExamDto
+                    {
+                        Score = t.Score,
+                        Answers = t.Answer,
+                        CreationTime = t.CreationTime,
+                        ExamId = t.ExamId,
+                        IsDeleted = t.IsDeleted
+                    }).ToList();
+            }
             return TestCountDto;
         }
 
@@ -86,14 +141,25 @@ namespace OnlineTestForCLanguage.Sessions
 
             var result = new TestDetail
             {
-                StudentId = createInput.StudentId,
+                StudentId = createInput.StudentId == -1 ? AbpSession.UserId.Value: createInput.StudentId,
                 StudentScoreSum = createInput.StudentScoreSum,
                 CreationTime = DateTime.Now,
                 IsDeleted = false,
-                IsInspected = createInput.IsInspected,
-                TestId = createInput.TestId
+                IsInspected = false,
+                TestId = createInput.TestId,
+                Test =_TestRepository.FirstOrDefault(createInput.TestId),
+                TeacherId = -1
             };
-
+            if (createInput.detail_Exams != null && createInput.detail_Exams.Count != 0)
+            {
+                result.TestDetail_Exams = createInput.detail_Exams.Select(c => new TestDetail_Exam { 
+                    Score = c.Score,
+                    Answer =c.Answers ,
+                    CreationTime = DateTime.Now,
+                    ExamId = c.ExamId,
+                    IsDeleted =false ,
+                }).ToList();
+            }
             return result;
         }
         public override async Task DeleteAsync(EntityDto<long> input)

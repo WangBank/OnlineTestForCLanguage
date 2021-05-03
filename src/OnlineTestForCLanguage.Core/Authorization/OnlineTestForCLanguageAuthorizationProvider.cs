@@ -13,6 +13,8 @@ namespace OnlineTestForCLanguage.Authorization
             context.CreatePermission(PermissionNames.Pages_Exams, L("Exams"));
             context.CreatePermission(PermissionNames.Pages_Papers, L("Papers"));
             context.CreatePermission(PermissionNames.Pages_Tests, L("Tests"));
+            context.CreatePermission(PermissionNames.CanInspected, L("CanInspected"));
+            context.CreatePermission(PermissionNames.CanBeginTest, L("CanBeginTest"));
             context.CreatePermission(PermissionNames.Pages_TestCounts, L("TestCounts"));
             context.CreatePermission(PermissionNames.Pages_Roles, L("Roles"));
             

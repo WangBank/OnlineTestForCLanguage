@@ -6,41 +6,93 @@
     Layout = null;
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("正在考试"))
-<form name="UserEditForm" role="form" class="form-horizontal">
+<form name="TestStartModal" role="form" class="form-horizontal">
     <input type="hidden" name="Id" value="@Model.Test.Id" />
     <div class="modal-body">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" role="tab" href="#edit-Test-details">考试明细</a>
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#edit-Test-details">试题内容</a>
             </li>
            
         </ul>
         <div class="tab-content mt-4">
             <div role="tabpanel" class="tab-pane container active" id="edit-Test-details">
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="Title">单选题</label>
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType != OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
+                    {
+                        <input name="examSelectids" value="@item.ExamId" hidden readonly />
+                    }
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
+                    {
+                        <input name="examNotSelectids" value="@item.ExamId" hidden readonly />
+                    }
+                    <label class="col-md-3 col-form-label" for="Title">单选题(一个5分)</label>
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect))
+                    {
+                        <div>@item.Exam.Content</div>
+                        <table class="col-md-12">
 
+                            @foreach (var examDetail in item.Exam.answers)
+                            {
+                <tr align="center">
+                    <td><input type="radio" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
+                    <td>
+                        <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
+                    </td>
+                </tr>}
+                        </table>
+                    }
                 </div>
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">多选题</label>
+                    <label class="col-md-3 col-form-label">多选题(一个10分)</label>
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect))
+                    {
+                <div>@item.Exam.Content</div>
+                                <table class="col-md-12">
 
+                                    @foreach (var examDetail in item.Exam.answers)
+                                    {
+                    <tr align="center">
+                        <td><input type="checkbox" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
+                        <td>
+                            <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
+                        </td>
+                    </tr>
+}
+                                </table>}
                 </div>
 
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">判断题</label>
-                    <div class="col-md-9">
-                        <input type="datetime-local" name="EndTime" value="@Model.Test.EndTime.ToString("yyyy-MM-ddTHH:mm")" class="form-control" placeholder="请选择结束时间">
-                    </div>
+                    <label class="col-md-3 col-form-label">判断题(一个5分)</label>
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge))
+                    {
+                <div>@item.Exam.Content</div>
+                                <table class="col-md-12">
+
+                                    @foreach (var examDetail in item.Exam.answers)
+                                    {
+                    <tr align="center">
+                        <td><input type="radio" name="answerName-@item.Exam.Id"  id="@examDetail.AnswerId"/></td>
+                        <td>
+                            <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
+                        </td>
+                    </tr>
+}
+                                </table>}
                 </div>
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">简答题</label>
-
+                    <label class="col-md-3 col-form-label">简答题(一个10分)</label>
+                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
+                    {
+                <div class="row">@item.Exam.Content</div>
+                <textarea type="text" id="simpleAnswerId-@item.Exam.Id" name="AnswerContent-@item.Exam.answers.FirstOrDefault().Id" class="form-control" required maxlength="4000"></textarea>
+                }
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer justify-content-between">
-        <button type="submit" class="btn btn-primary save-button">确认交卷</button>
+        <button type="submit" id="ensure-submit" class="btn btn-primary">确认交卷</button>
     </div>
 </form>
 

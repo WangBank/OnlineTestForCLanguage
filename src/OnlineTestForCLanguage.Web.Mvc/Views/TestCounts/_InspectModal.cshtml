@@ -1,0 +1,24 @@
+﻿0@using Abp.Authorization.Users
+@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Web.Models.TestCounts
+@model InspectTestCountModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("手动阅卷"))
+<form name="UserEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.TestCount.Id" />
+    <div class="modal-body">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#Inspect-TestCount-details">手动阅卷</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-4">
+         
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+
+<script src="~/view-resources/Views/TestCounts/_InspectModal.js" asp-append-version="true"></script>

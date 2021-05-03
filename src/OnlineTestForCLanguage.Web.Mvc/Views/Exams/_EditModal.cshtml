@@ -14,20 +14,30 @@
             </li>
         </ul>
         <div class="tab-content mt-4">
-            <div role="tabpanel" class="tab-pane container active" id="edit-exam-details">
-                <div class="form-group row required">
-                    <label class="col-md-3 col-form-label" for="Title">标题</label>
-                    <div class="col-md-9">
-                        <input id="Title" type="text" class="form-control" name="Title" value="@Model.Exam.Title" required minlength="2">
-                    </div>
-                </div>
+            <div role="tabpanel" class="tab-pane container active" id="create-Exam-details">
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">考题难度</label>
                     <div class="col-md-9">
                         <select class="form-control" name="Difficulty" required>
-                            <option value="0">简单</option>
-                            <option value="1">一般</option>
-                            <option value="2">困难</option>
+                            @if (Model.Exam.Difficulty == OnlineTestForCLanguage.Exams.DifficultyType.difficult)
+                            {
+                                <option value="0">简单</option>
+                                <option value="1">一般</option>
+                                <option value="2" selected>困难</option>
+                            }
+                            else if (Model.Exam.Difficulty == OnlineTestForCLanguage.Exams.DifficultyType.general)
+                            {
+                                <option value="0">简单</option>
+                                <option value="1" selected>一般</option>
+                                <option value="2">困难</option>
+                            }
+                            else if (Model.Exam.Difficulty == OnlineTestForCLanguage.Exams.DifficultyType.simple)
+                            {
+                                <option value="0" selected>简单</option>
+                                <option value="1">一般</option>
+                                <option value="2">困难</option>
+                            }
+
                         </select>
                     </div>
                 </div>
@@ -35,34 +45,97 @@
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">考题类型</label>
                     <div class="col-md-9">
-                        <select class="form-control" name="ExamType" id="ExamType" required>
-                            <option value="0">单选题</option>
-                            <option value="1">多选题</option>
-                            <option value="2">判断题</option>
-                            <option value="3">简答题</option>
-                        </select>
+                        <input id="ExamEditType" value="@Model.Exam.ExamType" disabled="disabled" hidden />
+                        @Model.Exam.ExamType_Info
+                    </div>
+                </div>
+
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">标题</label>
+                    <div class="col-md-9">
+                        <input type="text" value="@Model.Exam.Title" name="Title" id="Title" class="form-control" required maxlength="80">
+                    </div>
+                </div>
+                <div class="form-group row required">
+                    <label class="col-md-3 col-form-label">考题内容</label>
+                    <div class="col-md-9">
+                        <textarea name="Content"  id="Content" class="form-control" required maxlength="200">@Model.Exam.Content</textarea>
                     </div>
                 </div>
 
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">答案</label>
                     <div class="col-md-9" id="examContent">
-                        <input type="text" name="Content" class="form-control" value="@Model.Exam.Content" required maxlength="4000">
+                        @switch (Model.Exam.ExamType)
+                        {
+                            case OnlineTestForCLanguage.Exams.ExamType.SingleSelect:
+                    <table class="col-md-12">
+                        <tr align="center">
+                            <td width="15%">正确选项</td>
+                            <td>答案内容</td>
+                        </tr>
+                        @foreach (var item in Model.Exam.answers)
+                        {
+                    <tr align="center">
+                        <td><input type="radio" id='@item.AnswerId' name="answerName" @(item.IsSelected.Value ? "checked" : "") /></td>
+                        <td>
+                            <input type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
+                        </td>
+                    </tr>}
+                    </table> break;
+                case OnlineTestForCLanguage.Exams.ExamType.MulSelect:
+                    <table class="col-md-12">
+                        <tr align="center">
+                            <td width="15%">是否答案</td>
+                            <td>答案内容</td>
+                        </tr>
+                        @foreach (var item in Model.Exam.answers)
+                        {
+                    <tr align="center">
+                        <td><input type="checkbox" id='@item.AnswerId' name="answerName" @(item.IsSelected.Value ? "checked" : "") /></td>
+                        <td>
+                            <input type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
+                        </td>
+                    </tr>
+}
+                    </table> break;
+                case OnlineTestForCLanguage.Exams.ExamType.Judge:
+                    <table class="col-md-12">
+                        <tr align="center">
+                            <td width="15%">正确选项</td>
+                            <td>答案内容</td>
+                        </tr>
+                        @foreach (var item in Model.Exam.answers)
+                        {
+                    <tr align="center">
+                        <td><input type="radio" id='@item.AnswerId' name="answerName" @(item.IsSelected.Value ? "checked" : "") /></td>
+                        <td>
+                            <input type="text" name="AnswerContent" class="form-control" required maxlength="80" readonly value="@item.Content">
+                        </td>
+                    </tr>}
+                    </table>break;
+                case OnlineTestForCLanguage.Exams.ExamType.ShortAnswer:
+                    <textarea type="text" id="simpleAnswerId" name="AnswerContent" class="form-control" required maxlength="4000">@Model.Exam.answers.FirstOrDefault().Content</textarea>break;
+                                    default:
+                                        break;
+                                }
                     </div>
                 </div>
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">解析</label>
                     <div class="col-md-9">
-                        <input type="text" name="Explain" class="form-control" required maxlength="80">
+                        <textarea name="Explain" class="form-control" id="Explain" maxlength="200">@Model.Exam.Explain</textarea>
                     </div>
                 </div>
                 <div class="form-group row required">
                     <label class="col-md-3 col-form-label">考题分数</label>
                     <div class="col-md-9">
-                        <input type="text" id="score" value="@Model.Exam.Score" name="Title" class="form-control" maxlength="80" readonly>
+                        <input type="text" id="score" value="@Model.Exam.Score" name="score" class="form-control" maxlength="80" readonly>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
     @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")

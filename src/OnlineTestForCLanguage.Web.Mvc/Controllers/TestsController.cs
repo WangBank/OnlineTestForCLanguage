@@ -46,10 +46,8 @@ namespace OnlineTestForCLanguage.Web.Controllers
         public async Task<ActionResult> StartModal(long TestId)
         {
             var Test = await _TestAppService.GetAsync(new EntityDto<long>(TestId));
-            var output = await _PaperAppService.GetAllAsync(new PagedPaperResultRequestDto());
             var model = new EditTestModalViewModel();
             model.Test = Test;
-            model.Papers = output.Items;
             return PartialView("_StartModal", model);
         }
     }

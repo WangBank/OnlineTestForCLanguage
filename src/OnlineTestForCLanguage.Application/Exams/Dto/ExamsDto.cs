@@ -2,6 +2,7 @@
 using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using OnlineTestForCLanguage.Exams;
+using OnlineTestForCLanguage.Exams.Dto;
 using OnlineTestForCLanguage.Helpers;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace OnlineTestForCLanguage.Sessions.Dto
         /// 正确的考题明细id,以,号分割
         /// </summary>
         public string CorrectDetailIds { get; set; }
-
+        public List<ExamDetailDto> answers { get; set; }
         public string ExamType_Info
         {
             get

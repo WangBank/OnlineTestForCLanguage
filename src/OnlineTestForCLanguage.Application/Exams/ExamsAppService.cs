@@ -23,13 +23,6 @@ namespace OnlineTestForCLanguage.Sessions
         {
             _examRepository = examRepository;
         }
-        public async Task<ListResultDto<ExamDto>> GetExamsAsync(PagedExamResultRequestDto input)
-        {
-            var exams = await GetAllAsync(input);
-            exams.Items = exams.Items.OrderBy(e=>e.Id).ToList();
-            return exams;
-        }
-
         public override async Task<ExamDto> CreateAsync(CreateExamDto input)
         {
             CheckCreatePermission();
@@ -71,22 +64,94 @@ namespace OnlineTestForCLanguage.Sessions
         {
             CheckUpdatePermission();
 
-            var exam = await _examRepository.FirstOrDefaultAsync(input.Id);
+            var exam = await _examRepository.GetAllIncluding(s=>s.ExamDetails).FirstOrDefaultAsync(e=>e.Id == input.Id);
 
             MapToEntity(input, exam);
 
             return await GetAsync(input);
         }
-
+        public override async Task<ExamDto> GetAsync(EntityDto<long> input)
+        {
+            var exam = await _examRepository.GetAllIncluding(p => p.ExamDetails).FirstOrDefaultAsync(p => p.Id == input.Id);
+            var result = MapToEntityDto(exam);
+            return result;
+        }
+        protected override ExamDto MapToEntityDto(Exam exam)
+        {
+            var examDto = new ExamDto
+            {
+               Score = exam.Score,
+               Content = exam.Content,
+               CorrectDetailIds = exam.CorrectDetailIds,
+               CreationTime = exam.CreationTime,
+               Difficulty = exam.Difficulty,
+               ExamType = exam.ExamType,
+               Explain = exam.Explain,
+               Id = exam.Id,
+               IsDeleted = exam.IsDeleted,
+               Title = exam.Title
+            };
+            if (exam.ExamDetails != null && exam.ExamDetails.Count != 0)
+            {
+                switch (exam.ExamType)
+                {
+                    case ExamType.SingleSelect:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = e.AnswerId == exam.CorrectDetailIds ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.MulSelect:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = exam.CorrectDetailIds.Split(",").Contains(e.AnswerId) ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.Judge:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = e.AnswerId == exam.CorrectDetailIds ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.ShortAnswer:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = true,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+            return examDto;
+        }
         protected override void MapToEntity(ExamDto input, Exam entity)
         {
             entity.Title = input.Title;
-            entity.Score = input.Score;
             entity.Content = input.Content;
             entity.CorrectDetailIds = input.CorrectDetailIds;
             entity.Difficulty = input.Difficulty;
             entity.Explain = input.Explain;
-            entity.ExamType = input.ExamType;
+            if (entity.ExamDetails != null && input.answers != null)
+            {
+                foreach (var item in entity.ExamDetails)
+                {
+                    item.Content = input.answers.FirstOrDefault(e => e.AnswerId == item.AnswerId).Content;
+                }
+            }
         }
 
         public override async Task DeleteAsync(EntityDto<long> input)

@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using OnlineTestForCLanguage.Exams;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,9 +34,10 @@ namespace OnlineTestForCLanguage.Papers
     {
         public virtual long PaperId { get; set; }
         [ForeignKey("PaperId")]
-        public Paper Paper { get; set; }
-        public long ExamId { get; set; }
-
+        public virtual Paper Paper { get; set; }
+        public virtual long ExamId { get; set; }
+        [ForeignKey("ExamId")]
+        public virtual Exam Exam { get; set; }
         public bool IsDeleted { get; set; }
         public PaperDetail()
         {

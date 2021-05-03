@@ -6,6 +6,7 @@
     <text name="Exams" value="考题管理" />
     <text name="Papers" value="试卷管理" />
     <text name="Tests" value="考试管理" />
+    <text name="CanInspected" value="阅卷功能" />
     <text name="TestCounts" value="考试统计" />
     <text name="WelcomeMessage" value="欢迎使用 OnlineTestForCLanguage!" />
     <text name="FormIsNotValidMessage" value="部分输入信息不符合要求，请检查并改正.." />
@@ -63,6 +64,8 @@
     <text name="PasswordTooShort">密码长度太短</text>
     <text name="UserName">用户名</text>
     <text name="Name">名称</text>
+    <text name="Permissions">权限管理</text>
+    <text name="RoleDescription">角色信息描述</text>
     <text name="IsActive">是否启用</text>
     <text name="LastLoginTime">最近登陆时间</text>
     <text name="RoleName">角色名</text>
@@ -76,7 +79,7 @@
     
     <text name="Yes">是</text>
     <text name="No">否</text>
-    
+    <text name="CanBeginTest" value="进行考试" />
     <text name="Cancel">取消</text>
     <text name="OK">确定</text>
     <text name="CreateNewRole">创建新角色</text>

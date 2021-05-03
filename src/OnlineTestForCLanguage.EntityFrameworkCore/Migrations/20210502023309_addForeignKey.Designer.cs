@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineTestForCLanguage.EntityFrameworkCore;
 
 namespace OnlineTestForCLanguage.Migrations
 {
     [DbContext(typeof(OnlineTestForCLanguageDbContext))]
-    partial class OnlineTestForCLanguageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210502023309_addForeignKey")]
+    partial class addForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1763,9 +1765,6 @@ namespace OnlineTestForCLanguage.Migrations
                     b.Property<decimal>("StudentScoreSum")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("TeacherId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("TestId")
                         .HasColumnType("bigint");
 
@@ -2116,7 +2115,7 @@ namespace OnlineTestForCLanguage.Migrations
                         .IsRequired();
 
                     b.HasOne("OnlineTestForCLanguage.Tests.TestDetail", "TestDetail")
-                        .WithMany("TestDetail_Exams")
+                        .WithMany()
                         .HasForeignKey("TestDetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2205,11 +2204,6 @@ namespace OnlineTestForCLanguage.Migrations
             modelBuilder.Entity("OnlineTestForCLanguage.Papers.Paper", b =>
                 {
                     b.Navigation("PaperDetails");
-                });
-
-            modelBuilder.Entity("OnlineTestForCLanguage.Tests.TestDetail", b =>
-                {
-                    b.Navigation("TestDetail_Exams");
                 });
 #pragma warning restore 612, 618
         }

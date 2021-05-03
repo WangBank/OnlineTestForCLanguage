@@ -31,12 +31,12 @@ namespace OnlineTestForCLanguage.Web.Controllers
             var model = new IndexTestCountViewModel();
             return View(model);
         }
-        public async Task<ActionResult> EditModal(long TestCountId)
+        public async Task<ActionResult> InspectModal(long TestCountId)
         {
-            var TestCount = await _TestCountAppService.GetAsync(new EntityDto<long>(TestCountId));
-            var model = new EditTestCountModalViewModel();
+            var TestCount = await _TestCountAppService.GetInspectAsync(new EntityDto<long>(TestCountId));   
+            var model = new InspectTestCountModalViewModel();
             model.TestCount = TestCount;
-            return PartialView("_EditModal", model);
+            return PartialView("_InspectModal", model);
         }
     }
 }

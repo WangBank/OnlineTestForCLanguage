@@ -24,8 +24,10 @@ namespace OnlineTestForCLanguage.Sessions.Dto
     public class PaperDetailDto : EntityDto<long>
     {
         public long PaperId { get; set; }
-        public Paper Paper { get; set; }
+        public PaperDto Paper { get; set; }
         public long ExamId { get; set; }
+
+        public ExamDto Exam { get; set; }
         public bool IsDeleted { get; set; }
 
     }

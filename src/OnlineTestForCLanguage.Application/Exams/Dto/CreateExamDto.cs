@@ -34,4 +34,21 @@ namespace OnlineTestForCLanguage.Exams.Dto
         public string Content { get; set; }
         public string AnswerId { get; set; }
     }
+
+    [AutoMapTo(typeof(ExamDetail))]
+    public class UpdateExamDetailDto
+    {
+        public string Content { get; set; }
+        public string AnswerId { get; set; }
+    }
+
+    [AutoMapTo(typeof(ExamDetail))]
+    public class ExamDetailDto
+    {
+        public long Id { get; set; }
+        public string Content { get; set; }
+        public string AnswerId { get; set; }
+
+        public bool? IsSelected { get; set; }
+    }
 }

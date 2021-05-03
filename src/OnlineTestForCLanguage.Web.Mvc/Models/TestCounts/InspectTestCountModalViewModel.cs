@@ -6,7 +6,7 @@ using OnlineTestForCLanguage.Users.Dto;
 
 namespace OnlineTestForCLanguage.Web.Models.TestCounts
 {
-    public class EditTestCountModalViewModel
+    public class InspectTestCountModalViewModel
     {
         public TestCountDto TestCount { get; set; }
 

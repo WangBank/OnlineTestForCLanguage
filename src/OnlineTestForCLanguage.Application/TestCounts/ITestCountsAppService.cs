@@ -9,5 +9,6 @@ namespace OnlineTestForCLanguage.Sessions
 {
     public interface ITestCountsAppService : IAsyncCrudAppService<TestCountDto, long, PagedTestCountResultRequestDto, CreateTestCountDto, TestCountDto>
     {
+        Task<TestCountDto> GetInspectAsync(EntityDto<long> input);
     }
 }

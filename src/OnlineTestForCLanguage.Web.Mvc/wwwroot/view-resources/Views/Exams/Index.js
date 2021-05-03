@@ -13,7 +13,7 @@
             filter.skipCount = data.start;
 
             abp.ui.setBusy(_$table);
-            _examService.getExams(filter).done(function (result) {
+            _examService.getAll(filter).done(function (result) {
                 callback({
                     recordsTotal: result.totalCount,
                     recordsFiltered: result.totalCount,
@@ -124,6 +124,8 @@
             exam.CorrectAnswerId = ids.join(",")
         } else if (ExamType !== "3") {
             exam.CorrectAnswerId = _$form[0].querySelectorAll("input[name='answerName']:checked")[0].id;
+        } else if (ExamType === "3") {
+            exam.answers.push({ Content: $("#simpleAnswerId").val(), AnswerId: 'answerid' + answer });
         }
         _examService.create(exam).done(function () {
             _$modal.modal('hide');
@@ -287,7 +289,7 @@
                     $('#score').val('5')
                     break;
                 case "3":
-                    $('#examContent').html(`<textarea type="text" name="AnswerContent" class="form-control" required maxlength="4000"></textarea>`)
+                    $('#examContent').html(`<textarea id="simpleAnswerId" type="text" name="AnswerContent" class="form-control" required maxlength="4000"></textarea>`)
                     $('#score').val('10')
                     break;
                 default:

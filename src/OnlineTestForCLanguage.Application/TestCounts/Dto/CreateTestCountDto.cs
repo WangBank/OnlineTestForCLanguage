@@ -1,5 +1,6 @@
 ﻿using Abp.AutoMapper;
 using Abp.Runtime.Validation;
+using OnlineTestForCLanguage.Sessions.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace OnlineTestForCLanguage.Tests.Dto
         public DateTime CreationTime { get; set; }
         public bool IsDeleted { get; set; }
 
-        public long StudentId { get; set; }
+        public long StudentId { get; set; } = -1;
         public long TestId { get; set; }
         /// <summary>
         /// 是否允许阅卷
@@ -24,6 +25,8 @@ namespace OnlineTestForCLanguage.Tests.Dto
         /// 学生总分
         /// </summary>
         public decimal StudentScoreSum { get; set; }
+        
+        public List<TestDetail_ExamDto> detail_Exams { get; set; }
 
         public void Normalize()
         {
@@ -31,4 +34,33 @@ namespace OnlineTestForCLanguage.Tests.Dto
             IsDeleted = false;
         }
     }
+    [AutoMapTo(typeof(TestDetail_Exam))]
+    public class TestDetail_ExamDto : IShouldNormalize
+    {
+        public DateTime CreationTime { get; set; }
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// 哪个题目
+        /// </summary>
+        public long ExamId { get; set; }
+
+        public ExamDto Exam { get; set; }
+        /// <summary>
+        /// 得了多少分
+        /// </summary>
+        public decimal Score { get; set; }
+
+        /// <summary>
+        /// 简答题的话是 具体的内容
+        /// 单选 多选或者判断的话 是examdetailid 以,号分割
+        /// </summary>
+        public string Answers { get; set; }
+        public void Normalize()
+        {
+            CreationTime = DateTime.Now;
+            IsDeleted = false;
+        }
+    }
+
 }

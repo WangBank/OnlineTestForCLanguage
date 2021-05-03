@@ -13,7 +13,7 @@
             filter.skipCount = data.start;
 
             abp.ui.setBusy(_$table);
-            _TestCountService.getTestCounts(filter).done(function (result) {
+            _TestCountService.getAll(filter).done(function (result) {
                 callback({
                     recordsTotal: result.totalCount,
                     recordsFiltered: result.totalCount,
@@ -48,71 +48,76 @@
             },
             {
                 targets: 2,
-                data: '',
+                data: 'studentName',
                 sortable: false
             },
             {
                 targets: 3,
-                data: '',
+                data: 'studentScoreSum',
                 sortable: false
             },
             {
                 targets: 4,
-                data: '',
+                data: 'sumScore',
                 sortable: false,
             },
             {
                 targets: 5,
-                data: '',
+                data: 'isInspected',
                 sortable: false,
             },
             {
                 targets: 6,
-                data: '',
-                sortable: false
-            },
-            {
-                targets:7,
-                data: '',
-                sortable: false
-            },
-            {
-                targets: 8,
-                data: '',
+                data: 'teacherName',
                 sortable: false,
+                defaultContent:"暂未阅卷"
+            },
+            {
+                targets: 7,
+                data: 'testTitle',
+                sortable: false
+            },
+            {
+                targets:8,
+                data: 'beginTime',
+                sortable: false
             },
             {
                 targets: 9,
-                data: '',
+                data: 'endTime',
                 sortable: false,
             },
             {
-                targets: 6,
+                targets: 10,
                 data: null,
                 sortable: false,
                 autoWidth: false,
                 defaultContent: '',
                 render: (data, type, row, meta) => {
-                    return [
-                        `   <button type="button" class="btn btn-sm bg-secondary edit-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> Edit`,
-                        '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-danger delete-TestCount" data-TestCount-id="${row.id}" data-TestCount-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> Delete`,
-                        '   </button>'
-                    ].join('');
+                    console.log(data)
+                    console.log(type)
+                    console.log(row)
+                    console.log(meta)
+                    if (data.isInspected === false && data.canInspect === true) {
+                        return [
+                            `   <button type="button" class="btn btn-sm bg-secondary inspect-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountInspectModal">`,
+                            `       <i class="fas fa-pencil-alt"></i>阅卷`,
+                            '   </button>',
+                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCheckModal">`,
+                            `       <i class="fas fa-trash"></i>查看结果`,
+                            '   </button>'
+                        ].join('');
+                    } else {
+                        return [
+                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCheckModal">`,
+                            `       <i class="fas fa-trash"></i>查看结果`,
+                            '   </button>'
+                        ].join('');
+                    }
+                    
                 }
             }
         ]
-    });
-
-    _$form.validate({
-        rules: {
-            Password: "required",
-            ConfirmPassword: {
-                equalTo: "#Password"
-            }
-        }
     });
 
     _$form.find('.save-button').on('click', (e) => {
@@ -134,42 +139,16 @@
         });
     });
 
-    $(document).on('click', '.delete-TestCount', function () {
-        var TestCountId = $(this).attr("data-TestCount-id");
-        var TestCountName = $(this).attr('data-TestCount-name');
-
-        deleteTestCount(TestCountId, TestCountName);
-    });
-
-    function deleteTestCount(TestCountId, TestCountName) {
-        abp.message.confirm(
-            abp.utils.formatString(
-               '是否删除?',
-                TestCountName),
-            null,
-            (isConfirmed) => {
-                if (isConfirmed) {
-                    _TestCountService.delete({
-                        id: TestCountId
-                    }).done(() => {
-                        abp.notify.info('删除成功！');
-                        _$TestCountsTable.ajax.reload();
-                    });
-                }
-            }
-        );
-    }
-
-    $(document).on('click', '.edit-TestCount', function (e) {
+    $(document).on('click', '.inspect-TestCount', function (e) {
         var TestCountId = $(this).attr("data-TestCount-id");
 
         e.preventDefault();
         abp.ajax({
-            url: abp.appPath + 'TestCounts/EditModal?TestCountId=' + TestCountId,
+            url: abp.appPath + 'TestCounts/InspectModal?TestCountId=' + TestCountId,
             type: 'POST',
             dataType: 'html',
             success: function (content) {
-                $('#TestCountEditModal div.modal-content').html(content);
+                $('#TestCountInspectModal div.modal-content').html(content);
             },
             error: function (e) { }
         });
