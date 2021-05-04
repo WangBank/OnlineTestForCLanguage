@@ -1,0 +1,126 @@
+﻿@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Web.Models.TestCounts
+@model CheckTestCountModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("考试结果查看"))
+<form name="TestCountCheckModal" role="form" class="form-horizontal">
+    <input type="hidden" id="TestCountId" value="@Model.TestCount.Id" />
+    <div class="modal-body" style="overflow-y: auto; overflow-x: auto; width: 798px; height: 768px;">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#Check-TestCount-details">结果查看</a>
+            </li>
+        </ul>
+        <div class="tab-content mt-4">
+            <div role="tabpanel" class="tab-pane container active" id="Check-TestCount-details">
+                @{ var simpleSelects = Model.TestCount.detail_Exams.Where(d => d.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect).ToList();
+                    var mulSelects = Model.TestCount.detail_Exams.Where(d => d.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect).ToList();
+                    var judges = Model.TestCount.detail_Exams.Where(d => d.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge).ToList();
+                    var shortAnswers = Model.TestCount.detail_Exams.Where(d => d.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer).ToList(); }
+                @foreach (var item in Model.TestCount.detail_Exams)
+                {
+            <input name="examIds" value="@item.ExamId" hidden readonly />}
+                <div class="form-group row required">
+                    <label class="col-md-12 col-form-label">单选题(每道题5分)</label>
+                    @for (int i = 1; i < simpleSelects.Count + 1; i++)
+                    {
+                <div style="
+                            BORDER-RIGHT: 3px outset;
+                            BORDER-TOP: 3px outset;
+                            BACKGROUND: #ffffff;
+                            BORDER-LEFT: 3px outset;
+                            WIDTH: 100%;
+                            BORDER-BOTTOM: 3px outset;
+                            HEIGHT: 100%
+                    ">
+                    <div class="col-md-12"><h5>(@i) 考题内容:@simpleSelects[i - 1].Exam.Content</h5></div>
+                    <div class="col-md-12"><h5>满分:@simpleSelects[i - 1].Exam.Score</h5><h5>得分:@simpleSelects[i - 1].Score</h5></div>
+                    <div class="col-md-12">题目选项:
+                        @foreach (var item in simpleSelects[i - 1].Exam.answers)
+                        {
+                            <div class="col-md-12">@item.AnswerIdWithABCD @item.Content</div>
+                        }
+                    </div>
+                    <div class="col-md-12">考生答案:@simpleSelects[i - 1].AnswersWithAbc</div>
+                    <div class="col-md-12">标准答案:@simpleSelects[i - 1].Exam.CorrectDetailIdsWithABCD</div>
+                    <div class="col-md-12">解析:@simpleSelects[i - 1].Exam.Explain</div>
+                </div>}
+                </div>
+                <div class="form-group row required">
+                    <label class="col-md-12 col-form-label">多选题(每道题10分)</label>
+                    @for (int i = 1; i < mulSelects.Count + 1; i++)
+                    {
+                <div style="
+                            BORDER-RIGHT: 3px outset;
+                            BORDER-TOP: 3px outset;
+                            BACKGROUND: #ffffff;
+                            BORDER-LEFT: 3px outset;
+                            WIDTH: 100%;
+                            BORDER-BOTTOM: 3px outset;
+                            HEIGHT: 100%
+                    ">
+                    <div class="col-md-12"><h5>(@i) 考题内容:@mulSelects[i - 1].Exam.Content</h5></div>
+                    <div class="col-md-12"><h5>满分:@mulSelects[i - 1].Exam.Score</h5><h5>得分:@mulSelects[i - 1].Score</h5></div>
+                    <div class="col-md-12">
+                        题目选项:
+                        @foreach (var item in simpleSelects[i - 1].Exam.answers)
+                        {
+                            <div class="col-md-12">@item.AnswerIdWithABCD @item.Content</div>
+                        }
+                    </div>
+                    <div class="col-md-12">考生答案:@mulSelects[i - 1].AnswersWithAbc</div>
+                    <div class="col-md-12">标准答案:@mulSelects[i - 1].Exam.CorrectDetailIdsWithABCD</div>
+                    <div class="col-md-12">解析:@mulSelects[i - 1].Exam.Explain</div>
+                </div>}
+                </div>
+                <div class="form-group row required">
+                    <label class="col-md-12 col-form-label">判断题(每道题5分)</label>
+                    @for (int i = 1; i < judges.Count + 1; i++)
+                    {
+            <div style="
+                            BORDER-RIGHT: 3px outset;
+                            BORDER-TOP: 3px outset;
+                            BACKGROUND: #ffffff;
+                            BORDER-LEFT: 3px outset;
+                            WIDTH: 100%;
+                            BORDER-BOTTOM: 3px outset;
+                            HEIGHT: 100%
+                    ">
+                <div class="col-md-12"><h5>(@i)考题内容:@judges[i - 1].Exam.Content</h5></div>
+                <div class="col-md-12"><h5>满分:@judges[i - 1].Exam.Score</h5><h5>得分:@judges[i - 1].Score</h5></div>
+                <div class="col-md-12">考生答案:@judges[i - 1].Exam.answers.FirstOrDefault(a=>a.AnswerId == judges[i - 1].Answers).Content</div>
+                <div class="col-md-12">标准答案:@judges[i - 1].Exam.answers.FirstOrDefault(a=>a.AnswerId == judges[i - 1].Exam.CorrectDetailIds).Content</div>
+                <div class="col-md-12">解析:@judges[i - 1].Exam.Explain</div>
+            </div>}
+                </div>
+                <div class="form-group row required">
+                    <label class="col-md-12 col-form-label">简答题(每道题满分10分)</label>
+                    @for (int i = 1; i < shortAnswers.Count + 1; i++)
+                    {
+            <div style="
+                            BORDER-RIGHT: 3px outset;
+                            BORDER-TOP: 3px outset;
+                            BACKGROUND: #ffffff;
+                            BORDER-LEFT: 3px outset;
+                            WIDTH: 100%;
+                            BORDER-BOTTOM: 3px outset;
+                            HEIGHT: 100%
+                    ">
+                <div class="col-md-12"><h5>(@i) 考题内容:@shortAnswers[i - 1].Exam.Content</h5></div>
+                <div class="col-md-12"><h5>满分:@shortAnswers[i - 1].Exam.Score</h5><h5>得分:@shortAnswers[i - 1].Score</h5></div>
+                <div class="col-md-12">考生答案:<textarea readonly type="text" class="form-control" maxlength="4000">@shortAnswers[i-1].Answers</textarea></div>
+                <div class="col-md-12">标准答案:<textarea readonly type="text" class="form-control" maxlength="4000">@shortAnswers[i-1].Exam.answers.FirstOrDefault().Content</textarea></div>
+                <div class="col-md-12">解析:<textarea readonly type="text" class="form-control" maxlength="4000">@shortAnswers[i-1].Exam.Explain</textarea></div>
+            </div>}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default close-button" data-dismiss="modal">关闭</button>
+    </div>
+</form>
+
+<script src="~/view-resources/Views/TestCounts/_InspectModal.js" asp-append-version="true"></script>

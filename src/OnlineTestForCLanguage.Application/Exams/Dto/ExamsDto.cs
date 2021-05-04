@@ -29,6 +29,20 @@ namespace OnlineTestForCLanguage.Sessions.Dto
         /// 正确的考题明细id,以,号分割
         /// </summary>
         public string CorrectDetailIds { get; set; }
+        public string CorrectDetailIdsWithABCD {
+            get
+            {
+                if (!string.IsNullOrEmpty(CorrectDetailIds))
+                {
+                    return CorrectDetailIds.Replace("answerid0", "A").Replace("answerid1", "B").Replace("answerid2", "C").Replace("answerid3", "D");
+                }
+                else
+                {
+                    return "";
+                }
+               
+            }
+        }
         public List<ExamDetailDto> answers { get; set; }
         public string ExamType_Info
         {

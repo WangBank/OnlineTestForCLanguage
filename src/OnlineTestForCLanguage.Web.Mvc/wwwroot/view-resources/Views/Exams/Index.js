@@ -80,10 +80,10 @@
                 render: (data, type, row, meta) => {
                     return [
                         `   <button type="button" class="btn btn-sm bg-secondary edit-exam" data-exam-id="${row.id}" data-toggle="modal" data-target="#examEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> Edit`,
+                        `       <i class="fas fa-pencil-alt"></i> 编辑`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger delete-exam" data-exam-id="${row.id}" data-exam-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> Delete`,
+                        `       <i class="fas fa-trash"></i> 删除`,
                         '   </button>'
                     ].join('');
                 }

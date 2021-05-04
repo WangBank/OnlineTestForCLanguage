@@ -86,24 +86,33 @@ namespace OnlineTestForCLanguage.Sessions
         public override async Task<TestCountDto> GetAsync(EntityDto<long> input)
         {
 
-            var testCount = await _TestCountRepository.GetAll().Include(t=>t.Test).Include(t=>t.TestDetail_Exams).FirstOrDefaultAsync(t=>t.Id ==input.Id);
+            var testCount = await _TestCountRepository.GetAll().Include(t=>t.Test).Include(t=>t.TestDetail_Exams).ThenInclude(z => z.Exam).ThenInclude(e => e.ExamDetails).FirstOrDefaultAsync(t=>t.Id ==input.Id);
             var result = MapToEntityDto(testCount);
             return result;
         }
 
+       /// <summary>
+       ///  获取需要手动阅卷的答题信息
+       /// </summary>
+       /// <param name="input"></param>
+       /// <returns></returns>
         public async Task<TestCountDto> GetInspectAsync(EntityDto<long> input)
         {
-
             var testCount = await _TestCountRepository.GetAll().Include(t => t.Test).Include(t => t.TestDetail_Exams.Where(z => z.Exam.ExamType == Exams.ExamType.ShortAnswer)).ThenInclude(z=>z.Exam).ThenInclude(e=>e.ExamDetails).FirstOrDefaultAsync(t => t.Id == input.Id);
             var result = MapToEntityDto(testCount);
             return result;
         }
+
         public async Task InspectAsync(InspectTestCountDto input)
         {
             var TestCount = await _TestCountRepository.FirstOrDefaultAsync(input.Id);
             TestCount.IsInspected = true;
             TestCount.StudentScoreSum = TestCount.StudentScoreSum + input.detail_Exams.Sum(e => e.Score);
             TestCount.TeacherId = AbpSession.UserId.Value;
+            foreach (var item in TestCount.TestDetail_Exams)
+            {
+                item.Score = input.detail_Exams.Where(d => d.ExamId == item.ExamId).FirstOrDefault().Score;
+            }
         }
 
         protected override void MapToEntity(TestCountDto input, TestDetail entity)

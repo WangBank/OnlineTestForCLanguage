@@ -69,10 +69,10 @@ namespace OnlineTestForCLanguage.EntityFrameworkCore
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(new EFLoggerProvider());
-            optionsBuilder.UseLoggerFactory(loggerFactory);
-            optionsBuilder.EnableSensitiveDataLogging(true);
+            //var loggerFactory = new LoggerFactory();
+            //loggerFactory.AddProvider(new EFLoggerProvider());
+            //optionsBuilder.UseLoggerFactory(loggerFactory);
+            //optionsBuilder.EnableSensitiveDataLogging(true);
             base.OnConfiguring(optionsBuilder);
         }
 

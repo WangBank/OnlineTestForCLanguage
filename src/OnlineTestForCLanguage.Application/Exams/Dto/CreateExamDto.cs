@@ -48,7 +48,19 @@ namespace OnlineTestForCLanguage.Exams.Dto
         public long Id { get; set; }
         public string Content { get; set; }
         public string AnswerId { get; set; }
-
+        public string AnswerIdWithABCD {
+            get
+            {
+                if (!string.IsNullOrEmpty(AnswerId))
+                {
+                    return AnswerId.Replace("answerid0", "A").Replace("answerid1", "B").Replace("answerid2", "C").Replace("answerid3", "D");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
         public bool? IsSelected { get; set; }
     }
 }

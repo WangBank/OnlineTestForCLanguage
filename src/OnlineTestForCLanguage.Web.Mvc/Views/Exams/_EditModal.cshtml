@@ -79,7 +79,7 @@
                     <tr align="center">
                         <td><input type="radio" id='@item.AnswerId' name="answerName" @(item.IsSelected.Value ? "checked" : "") /></td>
                         <td>
-                            <input type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
+                            <span style="float: left; height: 34px; width: 50px; line-height: 34px;color:red">@item.AnswerIdWithABCD </span><input style="width:calc(100% - 50px);resize:none; height: 34px; float: left" type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
                         </td>
                     </tr>}
                     </table> break;
@@ -94,7 +94,7 @@
                     <tr align="center">
                         <td><input type="checkbox" id='@item.AnswerId' name="answerName" @(item.IsSelected.Value ? "checked" : "") /></td>
                         <td>
-                            <input type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
+                            <span style="float: left; height: 34px; width: 50px; line-height: 34px;color:red">@item.AnswerIdWithABCD </span><input style="width:calc(100% - 50px);resize:none; height: 34px; float: left" type="text" name="AnswerContent" class="form-control" required maxlength="80" value="@item.Content">
                         </td>
                     </tr>
 }

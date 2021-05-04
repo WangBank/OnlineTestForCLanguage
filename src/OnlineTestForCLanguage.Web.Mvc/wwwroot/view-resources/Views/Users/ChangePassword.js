@@ -35,7 +35,7 @@
         _userService.changePassword(changePasswordDto).done(success => {
             if (success) {
                 skipClearBusy = true;
-                abp.notify.info(l('SavedSuccessfully'));
+                abp.notify.info('修改密码成功!');
                 setTimeout(() => {
                     window.location.href = "/";
                 }, 1200);

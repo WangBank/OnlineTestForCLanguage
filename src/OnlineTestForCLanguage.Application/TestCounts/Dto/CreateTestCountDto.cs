@@ -56,6 +56,17 @@ namespace OnlineTestForCLanguage.Tests.Dto
         /// 单选 多选或者判断的话 是examdetailid 以,号分割
         /// </summary>
         public string Answers { get; set; }
+        public string AnswersWithAbc { get
+            {
+                if (!string.IsNullOrEmpty(Answers))
+                {
+                    return Answers.Replace("answerid0", "A").Replace("answerid1", "B").Replace("answerid2", "C").Replace("answerid3", "D");
+                }
+                else
+                {
+                    return "";
+                }
+            } }
         public void Normalize()
         {
             CreationTime = DateTime.Now;

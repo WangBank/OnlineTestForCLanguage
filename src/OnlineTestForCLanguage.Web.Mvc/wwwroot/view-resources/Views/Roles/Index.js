@@ -61,10 +61,10 @@
                 render: (data, type, row, meta) => {
                     return [
                         `   <button type="button" class="btn btn-sm bg-secondary edit-role" data-role-id="${row.id}" data-toggle="modal" data-target="#RoleEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
+                        `       <i class="fas fa-pencil-alt"></i> 编辑`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger delete-role" data-role-id="${row.id}" data-role-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> ${l('Delete')}`,
+                        `       <i class="fas fa-trash"></i> 删除`,
                         '   </button>',
                     ].join('');
                 }

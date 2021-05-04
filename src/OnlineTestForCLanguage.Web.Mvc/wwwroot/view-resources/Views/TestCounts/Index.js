@@ -99,13 +99,13 @@
                             `   <button type="button" class="btn btn-sm bg-secondary inspect-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountInspectModal">`,
                             `       <i class="fas fa-pencil-alt"></i>阅卷`,
                             '   </button>',
-                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCheckModal">`,
+                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountCheckModal">`,
                             `       <i class="fas fa-trash"></i>查看结果`,
                             '   </button>'
                         ].join('');
                     } else {
                         return [
-                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCheckModal">`,
+                            `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountCheckModal">`,
                             `       <i class="fas fa-trash"></i>查看结果`,
                             '   </button>'
                         ].join('');
@@ -140,7 +140,7 @@
 
         e.preventDefault();
         abp.ajax({
-            url: abp.appPath + 'TestCounts/InspectModal?TestCountId=' + TestCountId,
+            url: abp.appPath + 'TestCounts/Inspect?TestCountId=' + TestCountId,
             type: 'POST',
             dataType: 'html',
             success: function (content) {
@@ -150,6 +150,21 @@
         });
     });
 
+    $(document).on('click', '.check-TestCount', function (e) {
+        var TestCountId = $(this).attr("data-TestCount-id");
+
+        e.preventDefault();
+        abp.ajax({
+            url: abp.appPath + 'TestCounts/Check?TestCountId=' + TestCountId,
+            type: 'POST',
+            dataType: 'html',
+            success: function (content) {
+                $('#TestCountCheckModal div.modal-content').html(content);
+            },
+            error: function (e) { }
+        });
+    });
+   
     $(document).on('click', 'a[data-target="#TestCountCreateModal"]', (e) => {
         $('.nav-tabs a[href="#TestCount-details"]').tab('show')
     });

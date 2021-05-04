@@ -72,10 +72,10 @@
                 render: (data, type, row, meta) => {
                     return [
                         `   <button type="button" class="btn btn-sm bg-secondary edit-user" data-user-id="${row.id}" data-toggle="modal" data-target="#UserEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
+                        `       <i class="fas fa-pencil-alt"></i> 编辑`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger delete-user" data-user-id="${row.id}" data-user-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> ${l('Delete')}`,
+                        `       <i class="fas fa-trash"></i> 删除`,
                         '   </button>'
                     ].join('');
                 }
@@ -113,7 +113,7 @@
         _userService.create(user).done(function () {
             _$modal.modal('hide');
             _$form[0].reset();
-            abp.notify.info(l('SavedSuccessfully'));
+            abp.notify.info('创建用户成功!');
             _$usersTable.ajax.reload();
         }).always(function () {
             abp.ui.clearBusy(_$modal);
@@ -130,7 +130,7 @@
     function deleteUser(userId, userName) {
         abp.message.confirm(
             abp.utils.formatString(
-                l('AreYouSureWantToDelete'),
+                '你真的想删除此用户吗?',
                 userName),
             null,
             (isConfirmed) => {
@@ -138,7 +138,7 @@
                     _userService.delete({
                         id: userId
                     }).done(() => {
-                        abp.notify.info(l('SuccessfullyDeleted'));
+                        abp.notify.info('删除用户成功!');
                         _$usersTable.ajax.reload();
                     });
                 }
@@ -180,7 +180,7 @@
     });
 
     $('.txt-search').on('keypress', (e) => {
-        if (e.which == 13) {
+        if (e.which === 13) {
             _$usersTable.ajax.reload();
             return false;
         }

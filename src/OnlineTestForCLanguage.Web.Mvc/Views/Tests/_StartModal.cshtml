@@ -20,34 +20,37 @@
                 <div class="form-group row required">
                     @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType != OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
                     {
-                        <input name="examSelectids" value="@item.ExamId" hidden readonly />
-                    }
+                <input name="examSelectids" value="@item.ExamId" hidden readonly />}
                     @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
                     {
-                        <input name="examNotSelectids" value="@item.ExamId" hidden readonly />
-                    }
-                    <label class="col-md-3 col-form-label" for="Title">单选题(一个5分)</label>
-                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect))
+                <input name="examNotSelectids" value="@item.ExamId" hidden readonly />}
+                    @{ var singleSelects = Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect).ToList();
+                        var mulSelects = Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect).ToList();
+                        var judges = Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge).ToList();
+                        var shortAnswers = Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer).ToList(); }
+                    <label class="col-md-12 col-form-label" for="Title">单选题(一个5分)</label>
+                    @foreach (var item in singleSelects)
                     {
-                        <div>@item.Exam.Content</div>
-                        <table class="col-md-12">
+                        var nowindex = singleSelects.IndexOf(item) + 1;
+                <div class="col-md-12">(@nowindex) @item.Exam.Content</div>
+                                <table class="col-md-12">
 
-                            @foreach (var examDetail in item.Exam.answers)
-                            {
-                <tr align="center">
-                    <td><input type="radio" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
-                    <td>
-                        <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
-                    </td>
-                </tr>}
-                        </table>
-                    }
+                                    @foreach (var examDetail in item.Exam.answers)
+                                    {
+                    <tr align="center">
+                        <td><input type="radio" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
+                        <td>
+                            <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.AnswerIdWithABCD @examDetail.Content">
+                        </td>
+                    </tr>}
+                                </table>}
                 </div>
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">多选题(一个10分)</label>
-                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect))
+                    <label class="col-md-12 col-form-label">多选题(一个10分)</label>
+                    @foreach (var item in mulSelects)
                     {
-                <div>@item.Exam.Content</div>
+                        var nowindex = mulSelects.IndexOf(item) + 1;
+                <div class="col-md-12">(@nowindex) @item.Exam.Content</div>
                                 <table class="col-md-12">
 
                                     @foreach (var examDetail in item.Exam.answers)
@@ -55,38 +58,37 @@
                     <tr align="center">
                         <td><input type="checkbox" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
                         <td>
-                            <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
+                            <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.AnswerIdWithABCD @examDetail.Content">
                         </td>
-                    </tr>
-}
+                    </tr>}
                                 </table>}
                 </div>
 
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">判断题(一个5分)</label>
-                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge))
+                    <label class="col-md-12 col-form-label">判断题(一个5分)</label>
+                    @foreach (var item in judges)
                     {
-                <div>@item.Exam.Content</div>
+                        var nowindex = judges.IndexOf(item) + 1;
+                <div class="col-md-12">(@nowindex) @item.Exam.Content</div>
                                 <table class="col-md-12">
 
                                     @foreach (var examDetail in item.Exam.answers)
                                     {
                     <tr align="center">
-                        <td><input type="radio" name="answerName-@item.Exam.Id"  id="@examDetail.AnswerId"/></td>
+                        <td><input type="radio" name="answerName-@item.Exam.Id" id="@examDetail.AnswerId" /></td>
                         <td>
                             <input type="text" readonly name="AnswerContent-@item.Exam.Id" class="form-control" required maxlength="80" value="@examDetail.Content">
                         </td>
-                    </tr>
-}
+                    </tr>}
                                 </table>}
                 </div>
                 <div class="form-group row required">
-                    <label class="col-md-3 col-form-label">简答题(一个10分)</label>
-                    @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
+                    <label class="col-md-12 col-form-label">简答题(一个10分)</label>
+                    @foreach (var item in shortAnswers)
                     {
-                <div class="row">@item.Exam.Content</div>
-                <textarea type="text" id="simpleAnswerId-@item.Exam.Id" name="AnswerContent-@item.Exam.answers.FirstOrDefault().Id" class="form-control" required maxlength="4000"></textarea>
-                }
+                        var nowindex = shortAnswers.IndexOf(item) + 1;
+                <div class="col-md-12">(@nowindex) @item.Exam.Content</div>
+                                <textarea type="text" id="simpleAnswerId-@item.Exam.Id" name="AnswerContent-@item.Exam.answers.FirstOrDefault().Id" class="form-control" required maxlength="4000"></textarea>}
                 </div>
             </div>
         </div>

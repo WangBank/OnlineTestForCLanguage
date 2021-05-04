@@ -74,10 +74,10 @@
                 render: (data, type, row, meta) => {
                     return [
                         `   <button type="button" class="btn btn-sm bg-secondary edit-Paper" data-Paper-id="${row.id}" data-toggle="modal" data-target="#PaperEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> Edit`,
+                        `       <i class="fas fa-pencil-alt"></i> 编辑`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger delete-Paper" data-Paper-id="${row.id}" data-Paper-name="${row.name}">`,
-                        `       <i class="fas fa-trash"></i> Delete`,
+                        `       <i class="fas fa-trash"></i> 删除`,
                         '   </button>'
                     ].join('');
                 }
