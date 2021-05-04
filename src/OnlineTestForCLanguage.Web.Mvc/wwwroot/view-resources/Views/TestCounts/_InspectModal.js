@@ -1,63 +1,50 @@
 ﻿(function ($) {
-    var _examService = abp.services.app.exams,
-        _$modal = $('#examEditModal'),
+    var _TestCountService = abp.services.app.testCounts,
+        _$modal = $('#TestCountInspectModal'),
         _$form = _$modal.find('form');
 
-    function save() {
-        if (!_$form.valid()) {
-            return;
-        }
+    function InspectTest() {
 
-        var exam = _$form.serializeFormToObject();
-        var _$answers = _$form[0].querySelectorAll("input[name='AnswerContent']");
-        var ExamType = $("#ExamEditType").val();
-        console.log(ExamType)
-        exam.answers = [];
-        if (_$answers) {
-            for (var answer = 0; answer < _$answers.length; answer++) {
-                var _$answer = $(_$answers[answer]);
-                exam.answers.push({ Content: _$answer.val(), AnswerId: 'answerid' + answer });
-            }
-        }
-        if (ExamType === "1" || ExamType === "MulSelect" ) {
-            var answerCorrects = _$form[0].querySelectorAll("input[name='answerName']:checked");
-            if (answerCorrects.length === 0) {
-                abp.notify.error('请至少选择一个选项为正确选项!');
-                return;
-            }
-            var ids = [];
-            for (var i = 0; i < answerCorrects.length; i++) {
-                ids.push(answerCorrects[i].id);
-            }
-            exam.CorrectDetailIds = ids.join(",")
-        } else if (ExamType !== "3" && ExamType !== "ShortAnswer") {
-            exam.CorrectDetailIds = _$form[0].querySelectorAll("input[name='answerName']:checked")[0].id;
-        } else if (ExamType === "3" || ExamType === "ShortAnswer") {
-            exam.answers.push({ Content: $("#simpleAnswerId").val(), AnswerId: 'answerid' + answer });
-        }
+        var request = {};
+        var _$examIds = _$form[0].querySelectorAll("input[name='examIds']");
+        request.detail_Exams = [];
+        request.Id = $("#TestCountId").val();
 
-        abp.ui.setBusy(_$form);
-        _examService.update(exam).done(function () {
-            _$modal.modal('hide');
-            abp.notify.info('保存成功!');
-            abp.event.trigger('exam.edited', exam);
-        }).always(function () {
-            abp.ui.clearBusy(_$form);
-        });
+        if (_$examIds) {
+            for (var examid = 0; examid < _$examIds.length; examid++) {
+                var _$examid = $(_$examIds[examid]).val();
+                //获取当前学生选择的答案或者填写的内容
+                var score = $("#Grade-" + _$examid).val();
+                request.detail_Exams.push({ ExamId: _$examid, Score: score, });
+            }
+        }
+        
+        abp.message.confirm(
+            abp.utils.formatString(
+                '阅卷完成?'),
+            null,
+            (isConfirmed) => {
+                if (isConfirmed) {
+                    _TestCountService.inspect(request).done(function () {
+                        _$modal.modal('hide');
+                        _$form[0].reset();
+                        abp.notify.info('人工阅卷成功!');
+                        abp.event.trigger('TestCount.Inspected', request);
+                        
+                    }).always(function () {
+                        abp.ui.clearBusy(_$form);
+                    });
+                }
+            }
+        );
     }
-
-    _$form.closest('div.modal-content').find(".save-button").click(function (e) {
-        e.preventDefault();
-        save();
-    });
-
-    _$form.find('input').on('keypress', function (e) {
-        if (e.which === 13) {
+    $("#Inspect-Test").click(
+        function (e) {
             e.preventDefault();
-            save();
+            InspectTest();
         }
-    });
-
+    );
+    
     _$modal.on('shown.bs.modal', function () {
         _$form.find('input[type=text]:first').focus();
     });

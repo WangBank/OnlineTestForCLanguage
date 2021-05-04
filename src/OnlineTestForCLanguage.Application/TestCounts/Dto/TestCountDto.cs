@@ -28,7 +28,19 @@ namespace OnlineTestForCLanguage.Sessions.Dto
         /// 是否允许阅卷
         /// </summary>
         public bool IsInspected { get; set; }
-
+        public string InspectedStatus { 
+            get
+            {
+                if (IsInspected)
+                {
+                    return "阅卷完成";
+                }
+                else
+                {
+                    return "需阅卷";
+                }
+               
+            } }
         public  bool CanInspect { get; set; }
         /// <summary>
         /// 学生总分
@@ -41,6 +53,12 @@ namespace OnlineTestForCLanguage.Sessions.Dto
         public DateTime BeginTime { get; set; }
 
         public DateTime EndTime { get; set; }
+        public List<TestDetail_ExamDto> detail_Exams { get; set; }
+    }
+
+    public class InspectTestCountDto
+    {
+        public long Id { get; set; }
         public List<TestDetail_ExamDto> detail_Exams { get; set; }
     }
 }

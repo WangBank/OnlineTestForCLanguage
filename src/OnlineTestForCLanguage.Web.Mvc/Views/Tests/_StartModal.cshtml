@@ -6,17 +6,17 @@
     Layout = null;
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("正在考试"))
-<form name="TestStartModal" role="form" class="form-horizontal">
-    <input type="hidden" name="Id" value="@Model.Test.Id" />
-    <div class="modal-body">
+<form name="TestStartModal"  role="form" class="form-horizontal">
+    <input type="hidden" id="Id"  value="@Model.Test.Id" />
+    <div class="modal-body" style="overflow-y: auto; overflow-x: auto; width: 798px; height: 768px;">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" role="tab" href="#edit-Test-details">试题内容</a>
+                <a class="nav-link active" data-toggle="tab" role="tab" href="#start-Test-details">试题内容</a>
             </li>
            
         </ul>
         <div class="tab-content mt-4">
-            <div role="tabpanel" class="tab-pane container active" id="edit-Test-details">
+            <div role="tabpanel" class="tab-pane container active" id="start-Test-details">
                 <div class="form-group row required">
                     @foreach (var item in Model.Test.Paper.PaperDetails.Where(p => p.Exam.ExamType != OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
                     {

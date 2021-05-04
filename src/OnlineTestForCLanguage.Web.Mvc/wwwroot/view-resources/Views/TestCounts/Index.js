@@ -63,8 +63,8 @@
             },
             {
                 targets: 5,
-                data: 'isInspected',
-                sortable: false,
+                data: 'inspectedStatus',
+                sortable: true,
             },
             {
                 targets: 6,
@@ -94,10 +94,6 @@
                 autoWidth: false,
                 defaultContent: '',
                 render: (data, type, row, meta) => {
-                    console.log(data)
-                    console.log(type)
-                    console.log(row)
-                    console.log(meta)
                     if (data.isInspected === false && data.canInspect === true) {
                         return [
                             `   <button type="button" class="btn btn-sm bg-secondary inspect-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountInspectModal">`,
@@ -158,7 +154,7 @@
         $('.nav-tabs a[href="#TestCount-details"]').tab('show')
     });
 
-    abp.event.on('TestCount.edited', (data) => {
+    abp.event.on('TestCount.Inspected', (data) => {
         _$TestCountsTable.ajax.reload();
     });
 

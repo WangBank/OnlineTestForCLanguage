@@ -70,7 +70,6 @@
                         _$countmodal.modal('hide');
                         _$countform[0].reset();
                         abp.notify.info('交卷成功!');
-                        abp.event.trigger('Test.edited', Test);
                     }).always(function () {
                         abp.ui.clearBusy(_$countform);
                     });

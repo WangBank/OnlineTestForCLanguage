@@ -14,6 +14,8 @@ using OnlineTestForCLanguage.Tests;
 using OnlineTestForCLanguage.Tests.Dto;
 using OnlineTestForCLanguage.Sessions.Dto;
 using OnlineTestForCLanguage.Authorization.Users;
+using OnlineTestForCLanguage.Exams;
+using OnlineTestForCLanguage.Exams.Dto;
 
 namespace OnlineTestForCLanguage.Sessions
 {
@@ -35,11 +37,24 @@ namespace OnlineTestForCLanguage.Sessions
 
             var entity = MapToEntity(input);
 
-
+            
             await _TestCountRepository.InsertOrUpdateAsync(entity);
 
             CurrentUnitOfWork.SaveChanges();
+            var aftersave =await _TestCountRepository.GetAll().Include(t=>t.TestDetail_Exams).ThenInclude(t=>t.Exam).FirstOrDefaultAsync(f=>f.Id == entity.Id);
+            foreach (var item in aftersave.TestDetail_Exams.Where(e=>e.Exam.ExamType != ExamType.ShortAnswer))
+            {
+                if (item.Answer != item.Exam.CorrectDetailIds)
+                {
+                    item.Score = 0;
+                }
+                else
+                {
+                    item.Score = item.Exam.Score;
+                    entity.StudentScoreSum += entity.StudentScoreSum + item.Exam.Score;
+                }
 
+            }
             return MapToEntityDto(entity);
         }
         public override async Task<PagedResultDto<TestCountDto>> GetAllAsync(PagedTestCountResultRequestDto input)
@@ -79,19 +94,16 @@ namespace OnlineTestForCLanguage.Sessions
         public async Task<TestCountDto> GetInspectAsync(EntityDto<long> input)
         {
 
-            var testCount = await _TestCountRepository.GetAll().Include(t => t.Test).Include(t => t.TestDetail_Exams.Where(z => z.Exam.ExamType == Exams.ExamType.ShortAnswer)).FirstOrDefaultAsync(t => t.Id == input.Id);
+            var testCount = await _TestCountRepository.GetAll().Include(t => t.Test).Include(t => t.TestDetail_Exams.Where(z => z.Exam.ExamType == Exams.ExamType.ShortAnswer)).ThenInclude(z=>z.Exam).ThenInclude(e=>e.ExamDetails).FirstOrDefaultAsync(t => t.Id == input.Id);
             var result = MapToEntityDto(testCount);
             return result;
         }
-        public override async Task<TestCountDto> UpdateAsync(TestCountDto input)
+        public async Task InspectAsync(InspectTestCountDto input)
         {
-            CheckUpdatePermission();
-
             var TestCount = await _TestCountRepository.FirstOrDefaultAsync(input.Id);
-
-            MapToEntity(input, TestCount);
-
-            return await GetAsync(input);
+            TestCount.IsInspected = true;
+            TestCount.StudentScoreSum = TestCount.StudentScoreSum + input.detail_Exams.Sum(e => e.Score);
+            TestCount.TeacherId = AbpSession.UserId.Value;
         }
 
         protected override void MapToEntity(TestCountDto input, TestDetail entity)
@@ -130,6 +142,7 @@ namespace OnlineTestForCLanguage.Sessions
                         Answers = t.Answer,
                         CreationTime = t.CreationTime,
                         ExamId = t.ExamId,
+                        Exam = t.Exam != null? MapToEntityDto(t.Exam) : null,
                         IsDeleted = t.IsDeleted
                     }).ToList();
             }
@@ -166,6 +179,69 @@ namespace OnlineTestForCLanguage.Sessions
         {
             var TestCount = await _TestCountRepository.FirstOrDefaultAsync(input.Id);
             await _TestCountRepository.DeleteAsync(TestCount);
+        }
+
+        protected ExamDto MapToEntityDto(Exam exam)
+        {
+            var examDto = new ExamDto
+            {
+                Score = exam.Score,
+                Content = exam.Content,
+                CorrectDetailIds = exam.CorrectDetailIds,
+                CreationTime = exam.CreationTime,
+                Difficulty = exam.Difficulty,
+                ExamType = exam.ExamType,
+                Explain = exam.Explain,
+                Id = exam.Id,
+                IsDeleted = exam.IsDeleted,
+                Title = exam.Title
+            };
+            if (exam.ExamDetails != null && exam.ExamDetails.Count != 0)
+            {
+                switch (exam.ExamType)
+                {
+                    case ExamType.SingleSelect:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = e.AnswerId == exam.CorrectDetailIds ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.MulSelect:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = exam.CorrectDetailIds.Split(",").Contains(e.AnswerId) ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.Judge:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = e.AnswerId == exam.CorrectDetailIds ? true : false,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    case ExamType.ShortAnswer:
+                        examDto.answers = exam.ExamDetails.Select(e => new ExamDetailDto
+                        {
+                            IsSelected = true,
+                            AnswerId = e.AnswerId,
+                            Content = e.Content,
+                            Id = e.Id
+                        }).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return examDto;
         }
     }
 }
