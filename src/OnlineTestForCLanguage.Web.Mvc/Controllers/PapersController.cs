@@ -29,16 +29,25 @@ namespace OnlineTestForCLanguage.Web.Controllers
 
         public async Task<ActionResult> Index(PagedExamResultRequestDto input)
         {
-            var exams = await _ExamsAppService.GetAllAsync(input);
-            var model = new IndexPaperModalViewModel { Exams = exams.Items };
+            // 单选6 多选3 判断2 简答3
+            var exams = await _ExamsAppService.GetAllNoPageAsync();
+            if (exams.Where(e=>e.ExamType == Exams.ExamType.Judge).Count() < 2 || exams.Where(e => e.ExamType == Exams.ExamType.ShortAnswer).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.MulSelect).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.SingleSelect).Count() < 6)
+            {
+                ViewBag.CanAutoCreatePaper = false;
+            }
+            else
+            {
+                ViewBag.CanAutoCreatePaper = true;
+            }
+            var model = new IndexPaperModalViewModel { Exams = exams };
             return View(model);
         }
         public async Task<ActionResult> EditModal(long PaperId)
         {
             var Paper = await _PaperAppService.GetAsync(new EntityDto<long> { Id = PaperId});
             var model = new EditPaperModalViewModel();
-            var exams = await _ExamsAppService.GetAllAsync(new PagedExamResultRequestDto());
-            model.Exams = exams.Items;
+            var exams = await _ExamsAppService.GetAllNoPageAsync();
+            model.Exams = exams;
             model.Paper = Paper;
             return PartialView("_EditModal", model);
         }

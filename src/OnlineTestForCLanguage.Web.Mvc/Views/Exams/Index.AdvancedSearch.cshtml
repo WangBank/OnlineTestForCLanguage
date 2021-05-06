@@ -6,7 +6,23 @@
                     <span class="fas fa-search" aria-hidden="true"></span>
                 </button>
             </div>
-            <input type="text" name="Keyword" class="form-control txt-search" />
+            <select class="form-control" name="Difficulty" id="Difficulty" required>
+                <option selected hidden disabled value="">请选择试题难度</option>
+                <option value="3">全部</option>
+                <option value="0">简单</option>
+                <option value="1">一般</option>
+                <option value="2">困难</option>
+            </select>
+
+            <select class="form-control" id="ExamType" name="ExamType" required>
+                <option selected hidden disabled value="">请选择试题类型</option>
+                <option value="4">全部</option>
+                <option value="0">单选题</option>
+                <option value="1">多选题</option>
+                <option value="2">判断题</option>
+                <option value="3">简答题</option>
+            </select>
+            <input type="text" name="Keyword" placeholder="请输入试题内容或者标题" class="form-control txt-search" />
         </div>
     </form>
 </div>

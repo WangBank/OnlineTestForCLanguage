@@ -42,6 +42,7 @@ namespace OnlineTestForCLanguage.Sessions
 
             CurrentUnitOfWork.SaveChanges();
             var aftersave =await _TestCountRepository.GetAll().Include(t=>t.TestDetail_Exams).ThenInclude(t=>t.Exam).FirstOrDefaultAsync(f=>f.Id == entity.Id);
+            decimal sumscore = 0;
             foreach (var item in aftersave.TestDetail_Exams.Where(e=>e.Exam.ExamType != ExamType.ShortAnswer))
             {
                 if (item.Answer != item.Exam.CorrectDetailIds)
@@ -51,16 +52,17 @@ namespace OnlineTestForCLanguage.Sessions
                 else
                 {
                     item.Score = item.Exam.Score;
-                    entity.StudentScoreSum += entity.StudentScoreSum + item.Exam.Score;
+                    sumscore += item.Exam.Score;
                 }
 
             }
+            entity.StudentScoreSum = sumscore;
             return MapToEntityDto(entity);
         }
         public override async Task<PagedResultDto<TestCountDto>> GetAllAsync(PagedTestCountResultRequestDto input)
         {
             
-            var temp =await _TestCountRepository.GetAll().Include(t => t.Test).Take(input.MaxResultCount).Skip(input.SkipCount).OrderBy(t => t.Id).ToListAsync();
+            var temp =await _TestCountRepository.GetAll().Include(t => t.Test).Where(t=>!t.IsDeleted).Skip(input.SkipCount).Take(input.MaxResultCount).OrderBy(t => t.Id).ToListAsync();
             var result =  new PagedResultDto<TestCountDto> { 
                 Items = temp.Select(t=> MapToEntityDto(t)).ToList(),
                 TotalCount = _TestCountRepository.GetAll().Count(),
@@ -105,11 +107,11 @@ namespace OnlineTestForCLanguage.Sessions
 
         public async Task InspectAsync(InspectTestCountDto input)
         {
-            var TestCount = await _TestCountRepository.FirstOrDefaultAsync(input.Id);
+            var TestCount = await _TestCountRepository.GetAll().Include(t => t.TestDetail_Exams).ThenInclude(t=>t.Exam).FirstOrDefaultAsync(t => t.Id == input.Id);
             TestCount.IsInspected = true;
             TestCount.StudentScoreSum = TestCount.StudentScoreSum + input.detail_Exams.Sum(e => e.Score);
             TestCount.TeacherId = AbpSession.UserId.Value;
-            foreach (var item in TestCount.TestDetail_Exams)
+            foreach (var item in TestCount.TestDetail_Exams.Where(t => t.Exam.ExamType == ExamType.ShortAnswer))
             {
                 item.Score = input.detail_Exams.Where(d => d.ExamId == item.ExamId).FirstOrDefault().Score;
             }

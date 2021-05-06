@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Paper-details">试卷明细</a>
+                            <a class="nav-link active" data-toggle="tab" role="tab" href="#create-Paper-details">试卷基本信息</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" role="tab" href="#create-Exam-details">考题列表</a>
@@ -35,8 +35,43 @@
                             </div>
                         </div>
                         <div class="tab-pane container" id="create-Exam-details">
-                            <div class="row">
-                            @foreach (var exam in Model.Exams)
+                            <div><label>请在下面考题中,选取相应的题目组成试卷</label></div>
+                            <div>
+                                <label>单选题(每题5分)</label>
+                            @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect))
+                            {
+                            <div class="col-md-12">
+                                <input type="checkbox" name="exam" id="exam-@exam.Id" value="@exam.Id" title="@exam.Title" />
+                                <label for="exam-@exam.Id" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+                            </div>
+                            }
+                            </div>
+                            
+                            <div>
+                                <label>多选题(每题10分)</label>
+                            @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect))
+                            {
+                            <div class="col-md-12">
+                                <input type="checkbox" name="exam" id="exam-@exam.Id" value="@exam.Id" title="@exam.Title" />
+                                <label for="exam-@exam.Id" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+                            </div>
+                            }
+                            </div>
+
+                             <div>
+                                <label>判断题(每题5分)</label>
+                            @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge))
+                            {
+                            <div class="col-md-12">
+                                <input type="checkbox" name="exam" id="exam-@exam.Id" value="@exam.Id" title="@exam.Title" />
+                                <label for="exam-@exam.Id" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+                            </div>
+                            }
+                            </div>
+
+                               <div>
+                                <label>简答题(每题10分)</label>
+                            @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
                             {
                             <div class="col-md-12">
                                 <input type="checkbox" name="exam" id="exam-@exam.Id" value="@exam.Id" title="@exam.Title" />

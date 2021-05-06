@@ -1,8 +1,8 @@
 ﻿@using OnlineTestForCLanguage.Web.Startup
 @model OnlineTestForCLanguage.Web.Models.Papers.IndexPaperModalViewModel
-@{ 
+@{
     ViewBag.Title = "试卷管理";
-    ViewBag.CurrentPageName = PageNames.Papers; 
+    ViewBag.CurrentPageName = PageNames.Papers;
 }
 
 @section scripts
@@ -15,13 +15,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6">
-                <h1>试卷信息</h1>
+                <h1>试卷列表</h1>
             </div>
             <div class="col-sm-6">
                 <a href="javascript:;" data-toggle="modal" data-target="#PaperCreateModal" class="btn bg-blue float-sm-right">
                     <i class="fa fa-plus-square"></i>
-                    新增
+                    新增试卷
                 </a>
+                @if (ViewBag.CanAutoCreatePaper)
+                {
+                    <a href="javascript:;" data-toggle="modal" data-target="#PaperAutoCreateModal" class="btn bg-fuchsia float-sm-right">
+                        <i class="fa fa-plus-square"></i>
+                        自动生成试卷
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -36,9 +43,9 @@
                             <div class="col-md-6">
                                 <!--Use for bulk actions-->
                             </div>
-                            <div class="col-md-6">
+                            @*<div class="col-md-6">
                                 @await Html.PartialAsync("~/Views/Papers/Index.AdvancedSearch.cshtml")
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                     <div class="card-body">
@@ -66,7 +73,7 @@
 </section>
 
 @await Html.PartialAsync("~/Views/Papers/_CreateModal.cshtml", Model)
-
+@await Html.PartialAsync("~/Views/Papers/_AutoCreateModal.cshtml", Model)
 <div class="modal fade" id="PaperEditModal" tabindex="-1" role="dialog" aria-labelledby="PaperEditModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

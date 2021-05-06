@@ -100,13 +100,13 @@
                             `       <i class="fas fa-pencil-alt"></i>阅卷`,
                             '   </button>',
                             `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountCheckModal">`,
-                            `       <i class="fas fa-trash"></i>查看结果`,
+                            `       <i class="fas fa-search"></i>查看结果`,
                             '   </button>'
                         ].join('');
                     } else {
                         return [
                             `   <button type="button" class="btn btn-sm bg-danger check-TestCount" data-TestCount-id="${row.id}" data-toggle="modal" data-target="#TestCountCheckModal">`,
-                            `       <i class="fas fa-trash"></i>查看结果`,
+                            `       <i class="fas fa-search"></i>查看结果`,
                             '   </button>'
                         ].join('');
                     }

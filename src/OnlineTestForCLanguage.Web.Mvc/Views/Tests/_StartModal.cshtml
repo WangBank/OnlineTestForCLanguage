@@ -7,7 +7,7 @@
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("正在考试"))
 <form name="TestStartModal"  role="form" class="form-horizontal">
-    <input type="hidden" id="Id"  value="@Model.Test.Id" />
+    <input type="hidden" id="Id" name="Id" value="@Model.Test.Id" />
     <div class="modal-body" style="overflow-y: auto; overflow-x: auto; width: 798px; height: 768px;">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">

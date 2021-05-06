@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -51,6 +52,9 @@ namespace OnlineTestForCLanguage.Exams
 
         [Description("困难")]
         difficult = 2,
+        [Description("全部")]
+        [JsonIgnore]
+        all = 3
     }
 
     public enum ExamType
@@ -66,6 +70,10 @@ namespace OnlineTestForCLanguage.Exams
 
         [Description("简答题")]
         ShortAnswer = 3,
+
+        [Description("全部")]
+        [JsonIgnore]
+        all =4
 
     }
 

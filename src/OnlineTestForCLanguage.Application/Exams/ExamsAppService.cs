@@ -23,6 +23,30 @@ namespace OnlineTestForCLanguage.Sessions
         {
             _examRepository = examRepository;
         }
+
+        public override async Task<PagedResultDto<ExamDto>> GetAllAsync(PagedExamResultRequestDto input)
+        {
+            var count = _examRepository
+                .GetAll()
+                .Where(e => !e.IsDeleted)
+                .WhereIf(input.ExamType.HasValue && input.ExamType.Value != ExamType.all, e => e.ExamType == input.ExamType.Value)
+                .WhereIf(input.Difficulty.HasValue && input.Difficulty.Value != DifficultyType.all, e => e.Difficulty == input.Difficulty.Value)
+                .WhereIf(!string.IsNullOrEmpty(input.Keyword), e => e.Title.Contains(input.Keyword) || e.Content.Contains(input.Keyword))
+                .Count();
+            var exams =await _examRepository
+                .GetAll()
+                .Where(e=> !e.IsDeleted)
+                .WhereIf(input.ExamType.HasValue && input.ExamType.Value != ExamType.all, e => e.ExamType == input.ExamType.Value)
+                .WhereIf(input.Difficulty.HasValue && input.Difficulty.Value != DifficultyType.all, e => e.Difficulty == input.Difficulty.Value)
+                .WhereIf(!string.IsNullOrEmpty(input.Keyword), e => e.Title.Contains(input.Keyword) || e.Content.Contains(input.Keyword))
+                .Skip(input.SkipCount).Take(input.MaxResultCount)
+                .ToListAsync();
+            var result = new PagedResultDto<ExamDto> { 
+                TotalCount = count,
+                Items = exams.Select(s=>MapToEntityDto(s)).ToList()
+            };
+            return result;
+        }
         public override async Task<ExamDto> CreateAsync(CreateExamDto input)
         {
             CheckCreatePermission();
@@ -72,7 +96,7 @@ namespace OnlineTestForCLanguage.Sessions
         }
         public override async Task<ExamDto> GetAsync(EntityDto<long> input)
         {
-            var exam = await _examRepository.GetAllIncluding(p => p.ExamDetails).FirstOrDefaultAsync(p => p.Id == input.Id);
+            var exam = await _examRepository.GetAllIncluding(p => p.ExamDetails).FirstOrDefaultAsync(p => p.Id == input.Id && !p.IsDeleted);
             var result = MapToEntityDto(exam);
             return result;
         }
@@ -158,6 +182,14 @@ namespace OnlineTestForCLanguage.Sessions
         {
             var exam = await _examRepository.FirstOrDefaultAsync(input.Id);
             await _examRepository.DeleteAsync(exam);
+        }
+
+
+        public async Task<List<ExamDto>> GetAllNoPageAsync()
+        {
+            var exams = await _examRepository.GetAllIncluding(p => p.ExamDetails).Where(p=>!p.IsDeleted).ToListAsync();
+            var result = exams.Select(e=>MapToEntityDto(e)).ToList();
+            return result;
         }
     }
 }

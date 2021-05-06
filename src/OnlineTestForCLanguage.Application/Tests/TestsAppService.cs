@@ -54,7 +54,7 @@ namespace OnlineTestForCLanguage.Sessions
                     .ThenInclude(d=>d.Exam)
                     .ThenInclude(e => e.ExamDetails)
                     .AsNoTracking()
-                    .Where(p=>p.Id == input.Id).FirstOrDefaultAsync()
+                    .Where(p=>p.Id == input.Id && !p.IsDeleted).FirstOrDefaultAsync()
             );
             var result = MapToEntityDto(test);
             return result;

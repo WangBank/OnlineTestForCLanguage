@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.AutoMapper;
 using Abp.Runtime.Validation;
+using OnlineTestForCLanguage.Exams;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,12 @@ namespace OnlineTestForCLanguage.Papers.Dto
             IsDeleted = false;
         }
     }
+
+    public class AutoCreatePaperDto
+    {
+        public string Title { get; set; }
+        public DifficultyType Difficulty { get; set; }
+    }
+
 
 }

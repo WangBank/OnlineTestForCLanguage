@@ -1,7 +1,9 @@
 ﻿(function ($) {
     var _PaperService = abp.services.app.papers,
         _$modal = $('#PaperCreateModal'),
+        _$automodal = $('#PaperAutoCreateModal'),
         _$form = _$modal.find('form'),
+        _$autoform = _$automodal.find('form'),
         _$table = $('#PapersTable');
 
     var _$PapersTable = _$table.DataTable({
@@ -85,15 +87,6 @@
         ]
     });
 
-    _$form.validate({
-        rules: {
-            Password: "required",
-            ConfirmPassword: {
-                equalTo: "#Password"
-            }
-        }
-    });
-
     _$form.find('.save-button').on('click', (e) => {
         e.preventDefault();
 
@@ -118,6 +111,20 @@
             _$PapersTable.ajax.reload();
         }).always(function () {
             abp.ui.clearBusy(_$modal);
+        });
+    });
+
+    _$automodal.find('.auto-save-button').on('click', (e) => {
+        e.preventDefault();
+        var Paper = _$autoform.serializeFormToObject();
+        abp.ui.setBusy(_$modal);
+        _PaperService.autoCreate(Paper).done(function () {
+            _$automodal.modal('hide');
+            _$autoform[0].reset();
+            abp.notify.info('自动生成试卷成功!');
+            _$PapersTable.ajax.reload();
+        }).always(function () {
+            abp.ui.clearBusy(_$automodal);
         });
     });
 

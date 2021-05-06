@@ -14,21 +14,26 @@ using OnlineTestForCLanguage.Papers;
 using OnlineTestForCLanguage.Papers.Dto;
 using OnlineTestForCLanguage.Sessions.Dto;
 using OnlineTestForCLanguage.Authorization.Users;
+using OnlineTestForCLanguage.Exams;
+using System.Collections;
+
 namespace OnlineTestForCLanguage.Sessions
 {
     [AbpAuthorize(PermissionNames.Pages_Exams, PermissionNames.Pages_Papers, PermissionNames.Pages_TestCounts, PermissionNames.Pages_Tests)]
     public class PapersAppService : AsyncCrudAppService<Paper, PaperDto, long,PagedPaperResultRequestDto,CreatePaperDto,PaperDto>, IPapersAppService
     {
         private readonly IRepository<Paper,long> _PaperRepository;
+        private readonly IRepository<Exam, long> _ExamRepository;
         private readonly UserManager _userManager;
-        public PapersAppService(IRepository<Paper, long> PaperRepository, UserManager userManager) : base(PaperRepository)
+        public PapersAppService(IRepository<Paper, long> PaperRepository, UserManager userManager, IRepository<Exam, long> ExamRepository) : base(PaperRepository)
         {
             _PaperRepository = PaperRepository;
             _userManager = userManager;
+            _ExamRepository = ExamRepository;
         }
         public override async Task<PaperDto> GetAsync(EntityDto<long> input)
         {
-            var paper = await _PaperRepository.GetAllIncluding(p => p.PaperDetails).FirstOrDefaultAsync(p => p.Id == input.Id);
+            var paper = await _PaperRepository.GetAllIncluding(p => p.PaperDetails).FirstOrDefaultAsync(p => p.Id == input.Id && !p.IsDeleted);
             var result = MapToEntityDto(paper);
             return result;
         }
@@ -36,7 +41,7 @@ namespace OnlineTestForCLanguage.Sessions
         public async Task<ListResultDto<PaperDto>> GetPapersAsync(PagedPaperResultRequestDto input)
         {
             var Papers = await GetAllAsync(input);
-            Papers.Items = Papers.Items.OrderBy(e=>e.Id).ToList();
+            Papers.Items = Papers.Items.Where(p=>!p.IsDeleted).OrderBy(e=>e.Id).ToList();
             return Papers;
         }
 
@@ -47,6 +52,358 @@ namespace OnlineTestForCLanguage.Sessions
             var entity = MapToEntity(input);
 
           
+            await _PaperRepository.InsertOrUpdateAsync(entity);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return MapToEntityDto(entity);
+        }
+
+        public async Task<PaperDto> AutoCreateAsync(AutoCreatePaperDto input)
+        {
+            CheckCreatePermission();
+
+            var entity = new Paper { 
+                Score = 100,
+                CreateUserId =AbpSession.UserId.GetValueOrDefault() ,
+                CreationTime = DateTime.Now,
+                IsDeleted =false ,
+                Title = input.Title
+            };
+            entity.PaperDetails = new List<PaperDetail>
+            ();
+            // 单选6 多选3 判断2 简答3
+            var exams = await _ExamRepository.GetAllListAsync(p=>!p.IsDeleted);
+            var singleSelects = exams.Where(e => e.ExamType == ExamType.SingleSelect);
+            var mulSelects = exams.Where(e => e.ExamType == ExamType.MulSelect);
+            var judges = exams.Where(e => e.ExamType == ExamType.Judge);
+            var simpleanswers = exams.Where(e => e.ExamType == ExamType.ShortAnswer);
+
+            Random random = new Random();
+            ArrayList single = new ArrayList();
+            ArrayList mulle = new ArrayList();
+            ArrayList judgee = new ArrayList();
+            ArrayList shortle = new ArrayList();
+            int singlei = 0;
+            int muli = 0;
+            int judgei = 0;
+            int shorti = 0;
+            switch (input.Difficulty)
+            {
+                //7:2:1
+                case Exams.DifficultyType.simple:
+                    #region 单选题
+                    
+                    while (singlei < 6)
+                    {
+                        var index = random.Next(0, singleSelects.Count());
+                        if (!single.Contains(index))
+                        {
+                            single.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = singleSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            singlei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 多选
+                  
+                    while (muli < 3)
+                    {
+                        var index = random.Next(0, mulSelects.Count());
+                        if (!mulle.Contains(index))
+                        {
+                            mulle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = mulSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            muli++;
+                        }
+                    }
+                    #endregion
+
+                    #region 判断
+                    
+                    while (judgei < 2)
+                    {
+                        var index = random.Next(0, judges.Count());
+                        if (!judgee.Contains(index))
+                        {
+                            judgee.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = judges.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            judgei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 简答
+                   
+                    while (shorti < 3)
+                    {
+                        var index = random.Next(0, simpleanswers.Count());
+                        if (!shortle.Contains(index))
+                        {
+                            shortle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = simpleanswers.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            shorti++;
+                        }
+                    }
+                    #endregion
+                    break;
+                //5:3:2
+                case Exams.DifficultyType.general:
+                    #region 单选题
+
+                    while (singlei < 6)
+                    {
+                        var index = random.Next(0, singleSelects.Count());
+                        if (!single.Contains(index))
+                        {
+                            single.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = singleSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            singlei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 多选
+
+                    while (muli < 3)
+                    {
+                        var index = random.Next(0, mulSelects.Count());
+                        if (!mulle.Contains(index))
+                        {
+                            mulle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = mulSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            muli++;
+                        }
+                    }
+                    #endregion
+
+                    #region 判断
+
+                    while (judgei < 2)
+                    {
+                        var index = random.Next(0, judges.Count());
+                        if (!judgee.Contains(index))
+                        {
+                            judgee.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = judges.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            judgei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 简答
+
+                    while (shorti < 3)
+                    {
+                        var index = random.Next(0, simpleanswers.Count());
+                        if (!shortle.Contains(index))
+                        {
+                            shortle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = simpleanswers.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            shorti++;
+                        }
+                    }
+                    #endregion
+
+                    break;
+                //3:5:2
+                case Exams.DifficultyType.difficult:
+                    #region 单选题
+
+                    while (singlei < 6)
+                    {
+                        var index = random.Next(0, singleSelects.Count());
+                        if (!single.Contains(index))
+                        {
+                            single.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = singleSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            singlei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 多选
+
+                    while (muli < 3)
+                    {
+                        var index = random.Next(0, mulSelects.Count());
+                        if (!mulle.Contains(index))
+                        {
+                            mulle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = mulSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            muli++;
+                        }
+                    }
+                    #endregion
+
+                    #region 判断
+
+                    while (judgei < 2)
+                    {
+                        var index = random.Next(0, judges.Count());
+                        if (!judgee.Contains(index))
+                        {
+                            judgee.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = judges.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            judgei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 简答
+
+                    while (shorti < 3)
+                    {
+                        var index = random.Next(0, simpleanswers.Count());
+                        if (!shortle.Contains(index))
+                        {
+                            shortle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = simpleanswers.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            shorti++;
+                        }
+                    }
+                    #endregion
+                    break;
+                default:
+                    #region 单选题
+
+                    while (singlei < 6)
+                    {
+                        var index = random.Next(0, singleSelects.Count());
+                        if (!single.Contains(index))
+                        {
+                            single.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = singleSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            singlei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 多选
+
+                    while (muli < 3)
+                    {
+                        var index = random.Next(0, mulSelects.Count());
+                        if (!mulle.Contains(index))
+                        {
+                            mulle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = mulSelects.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            muli++;
+                        }
+                    }
+                    #endregion
+
+                    #region 判断
+
+                    while (judgei < 2)
+                    {
+                        var index = random.Next(0, judges.Count());
+                        if (!judgee.Contains(index))
+                        {
+                            judgee.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = judges.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            judgei++;
+                        }
+                    }
+                    #endregion
+
+                    #region 简答
+
+                    while (shorti < 3)
+                    {
+                        var index = random.Next(0, simpleanswers.Count());
+                        if (!shortle.Contains(index))
+                        {
+                            shortle.Add(index);
+                            entity.PaperDetails.Add(new PaperDetail
+                            {
+                                ExamId = simpleanswers.ToList()[index].Id,
+                                IsDeleted = false,
+
+                            });
+                            shorti++;
+                        }
+                    }
+                    #endregion
+                    break;
+            }
+
             await _PaperRepository.InsertOrUpdateAsync(entity);
 
             CurrentUnitOfWork.SaveChanges();

@@ -44,7 +44,7 @@
             {
                 targets: 1,
                 data: 'examType_Info',
-                sortable: false
+                sortable: true
             },
             {
                 targets: 2,

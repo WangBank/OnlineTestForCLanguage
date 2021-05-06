@@ -1,0 +1,71 @@
+﻿
+@using OnlineTestForCLanguage.Web.Models.Common.Modals
+@using OnlineTestForCLanguage.Papers
+@model OnlineTestForCLanguage.Web.Models.Papers.IndexPaperModalViewModel
+@{ Layout = null; }
+<div class="modal fade" id="PaperAutoCreateModal" tabindex="-1" role="dialog" aria-labelledby="PaperAutoCreateModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("自动生成试卷"))
+            <form name="PaperAutoCreateForm" role="form" class="form-horizontal">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" role="tab" href="#autocreate-Paper-details">试卷基本信息</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4">
+                        <div role="tabpanel" class="tab-pane container active" id="autocreate-Paper-details">
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">标题</label>
+                                <div class="col-md-9">
+                                    <input type="text" name="Title" class="form-control" required maxlength="80">
+                                </div>
+                            </div>
+
+                            <div class="form-group row required">
+                                <label class="col-md-3 col-form-label">难易比例(简单、一般及困难比例,默认一般)</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" name="Difficulty" required>
+                                        <option value="0">简单(7:2:1)</option>
+                                        <option value="1">一般(5:3:2)</option>
+                                        <option value="2">困难(3:5:2)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row required">
+                                <div class="col-md-12 col-form">
+                                    <h5>自动生成试卷规则:</h5>
+                                    <label>
+                                    总分100分
+                                    </label>
+                                    <br />
+                                    <label>
+                                        1.选择题6道,共30分,系统自动阅卷
+                                    </label>
+                                    <br />
+                                    <label>
+                                        2.多选题3道,共30分,系统自动阅卷
+                                    </label>
+                                    <br />
+                                    <label>
+                                        3.判断题2道,共10分,系统自动阅卷
+                                    </label>
+                                    <br />
+                                    <label>
+                                        4.简答题3道,共30分,需阅卷老师手动阅卷并给出分数 
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default close-button" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary auto-save-button">自动生成</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

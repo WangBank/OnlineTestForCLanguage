@@ -11,5 +11,6 @@ namespace OnlineTestForCLanguage.Exams.Dto
     {
         public ExamType? ExamType { get; set; }
         public DifficultyType? Difficulty { get; set; }
+        public string? Keyword { get; set; }
     }
 }
