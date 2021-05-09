@@ -81,17 +81,12 @@
                     if (data.canBeginTest) {
                         return [
                             `   <button type="button" class="btn btn-sm bg-blue start-Test" data-Test-id="${row.id}" data-toggle="modal" data-target="#TestStartModal">`,
-                            `       <i class="fas fa-trash"></i> 开始考试`,
+                            `       <i class="fas fa-play"></i> 开始考试`,
                             '   </button>'
                         ].join('');
                     } else {
                         return [
-                            `   <button type="button" class="btn btn-sm bg-secondary edit-Test" data-Test-id="${row.id}" data-toggle="modal" data-target="#TestEditModal">`,
-                            `       <i class="fas fa-pencil-alt"></i> 编辑`,
-                            '   </button>',
-                            `   <button type="button" class="btn btn-sm bg-danger delete-Test" data-Test-id="${row.id}" data-Test-name="${row.name}">`,
-                            `       <i class="fas fa-trash"></i> 删除`,
-                            '   </button>'
+                            `   <span>禁止操作</span>'
                         ].join('');
                     }
                     

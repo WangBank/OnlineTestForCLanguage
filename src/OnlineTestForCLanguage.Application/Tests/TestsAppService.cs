@@ -24,10 +24,12 @@ namespace OnlineTestForCLanguage.Sessions
     {
         private readonly UserManager _userManager;
         private readonly IRepository<Test, long> _TestRepository;
-        public TestsAppService(IRepository<Test, long> TestRepository, UserManager userManager) : base(TestRepository)
+        private readonly IRepository<TestDetail, long> _TestDetailRepository;
+        public TestsAppService(IRepository<Test, long> TestRepository, IRepository<TestDetail, long> TestDetailRepository, UserManager userManager) : base(TestRepository)
         {
             _userManager = userManager;
                _TestRepository = TestRepository;
+            _TestDetailRepository = TestDetailRepository;
         }
         public async Task<ListResultDto<TestDto>> GetTestsAsync(PagedTestResultRequestDto input)
         {
@@ -37,7 +39,16 @@ namespace OnlineTestForCLanguage.Sessions
                 var items = Tests.Items.ToList();
                 foreach (var item in items)
                 {
-                    item.CanBeginTest = true;
+                    var details =await _TestDetailRepository.GetAll().Where(t => t.TestId == item.Id && !t.IsDeleted && t.StudentId == AbpSession.UserId.GetValueOrDefault()).FirstOrDefaultAsync();
+                    if (details == null)
+                    {
+                        if (item.BeginTime> DateTime.Now && item.EndTime < DateTime.Now)
+                        {
+                            item.CanBeginTest = true;
+                        }
+                       
+                    }
+                    
                 }
                 Tests.Items = items;
             }
