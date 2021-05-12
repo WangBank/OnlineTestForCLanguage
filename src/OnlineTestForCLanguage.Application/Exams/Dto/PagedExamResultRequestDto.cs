@@ -9,7 +9,7 @@ namespace OnlineTestForCLanguage.Exams.Dto
 {
     public class PagedExamResultRequestDto : PagedResultRequestDto
     {
-        public ExamType? ExamType { get; set; }
+        public ExamType? ExamTypeSearch { get; set; }
         public DifficultyType? Difficulty { get; set; }
         public string? Keyword { get; set; }
     }

@@ -29,14 +29,14 @@ namespace OnlineTestForCLanguage.Sessions
             var count = _examRepository
                 .GetAll()
                 .Where(e => !e.IsDeleted)
-                .WhereIf(input.ExamType.HasValue && input.ExamType.Value != ExamType.all, e => e.ExamType == input.ExamType.Value)
+                .WhereIf(input.ExamTypeSearch.HasValue && input.ExamTypeSearch.Value != ExamType.all, e => e.ExamType == input.ExamTypeSearch.Value)
                 .WhereIf(input.Difficulty.HasValue && input.Difficulty.Value != DifficultyType.all, e => e.Difficulty == input.Difficulty.Value)
                 .WhereIf(!string.IsNullOrEmpty(input.Keyword), e => e.Title.Contains(input.Keyword) || e.Content.Contains(input.Keyword))
                 .Count();
             var exams =await _examRepository
                 .GetAll()
                 .Where(e=> !e.IsDeleted)
-                .WhereIf(input.ExamType.HasValue && input.ExamType.Value != ExamType.all, e => e.ExamType == input.ExamType.Value)
+                .WhereIf(input.ExamTypeSearch.HasValue && input.ExamTypeSearch.Value != ExamType.all, e => e.ExamType == input.ExamTypeSearch.Value)
                 .WhereIf(input.Difficulty.HasValue && input.Difficulty.Value != DifficultyType.all, e => e.Difficulty == input.Difficulty.Value)
                 .WhereIf(!string.IsNullOrEmpty(input.Keyword), e => e.Title.Contains(input.Keyword) || e.Content.Contains(input.Keyword))
                 .Skip(input.SkipCount).Take(input.MaxResultCount)
