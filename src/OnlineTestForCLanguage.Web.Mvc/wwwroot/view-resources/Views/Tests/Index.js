@@ -86,7 +86,7 @@
                         ].join('');
                     } else {
                         return [
-                            `   <span>禁止操作</span>'
+                            `   <span>禁止操作</span>`
                         ].join('');
                     }
                     

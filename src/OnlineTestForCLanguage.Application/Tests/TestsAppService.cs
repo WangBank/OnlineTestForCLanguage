@@ -42,7 +42,7 @@ namespace OnlineTestForCLanguage.Sessions
                     var details =await _TestDetailRepository.GetAll().Where(t => t.TestId == item.Id && !t.IsDeleted && t.StudentId == AbpSession.UserId.GetValueOrDefault()).FirstOrDefaultAsync();
                     if (details == null)
                     {
-                        if (item.BeginTime> DateTime.Now && item.EndTime < DateTime.Now)
+                        if (item.BeginTime< DateTime.Now && item.EndTime> DateTime.Now)
                         {
                             item.CanBeginTest = true;
                         }
