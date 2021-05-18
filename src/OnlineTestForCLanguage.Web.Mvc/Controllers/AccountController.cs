@@ -176,7 +176,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
                 {
                     if (model.UserName.IsNullOrEmpty() || model.Password.IsNullOrEmpty())
                     {
-                        throw new UserFriendlyException(L("FormIsNotValidMessage"));
+                        throw new UserFriendlyException(L("用户名密码不能为空"));
                     }
                 }
 

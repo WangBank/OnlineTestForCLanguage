@@ -74,11 +74,9 @@
 
     _$form.find('.save-button').on('click', (e) => {
         e.preventDefault();
-
         if (!_$form.valid()) {
             return;
         }
-
         var role = _$form.serializeFormToObject();
         role.grantedPermissions = [];
         var _$permissionCheckboxes = _$form[0].querySelectorAll("input[name='permission']:checked");
@@ -88,7 +86,6 @@
                 role.grantedPermissions.push(_$permissionCheckbox.val());
             }
         }
-
         abp.ui.setBusy(_$modal);
         _roleService
             .create(role)

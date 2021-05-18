@@ -8,7 +8,6 @@
         if (!_$form.valid()) {
             return;
         }
-
         var user = _$form.serializeFormToObject();
         user.roleNames = [];
         var _$roleCheckboxes = _$form[0].querySelectorAll("input[name='role']:checked");
@@ -18,7 +17,6 @@
                 user.roleNames.push(_$roleCheckbox.val());
             }
         }
-
         abp.ui.setBusy(_$form);
         _userService.update(user).done(function () {
             _$modal.modal('hide');
