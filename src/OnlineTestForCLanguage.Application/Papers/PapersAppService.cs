@@ -74,10 +74,28 @@ namespace OnlineTestForCLanguage.Sessions
             ();
             // 单选6 多选3 判断2 简答3
             var exams = await _ExamRepository.GetAllListAsync(p=>!p.IsDeleted);
-            var singleSelects = exams.Where(e => e.ExamType == ExamType.SingleSelect);
-            var mulSelects = exams.Where(e => e.ExamType == ExamType.MulSelect);
-            var judges = exams.Where(e => e.ExamType == ExamType.Judge);
-            var simpleanswers = exams.Where(e => e.ExamType == ExamType.ShortAnswer);
+
+            var singleSelects = exams.Where(e => e.ExamType == ExamType.SingleSelect).ToList();
+            var singlesimpleSelects = singleSelects.Where(e => e.Difficulty == DifficultyType.simple).ToList();
+            var singlegeneralSelects = singleSelects.Where(e => e.Difficulty == DifficultyType.general).ToList();
+            var singledifficultSelects = singleSelects.Where(e => e.Difficulty == DifficultyType.difficult).ToList();
+
+            var mulSelects = exams.Where(e => e.ExamType == ExamType.MulSelect).ToList();
+            var singlesimplemulSelects = mulSelects.Where(e => e.Difficulty == DifficultyType.simple).ToList();
+            var singlegeneralmulSelects = mulSelects.Where(e => e.Difficulty == DifficultyType.general).ToList();
+            var singledifficultmulSelects = mulSelects.Where(e => e.Difficulty == DifficultyType.difficult).ToList();
+
+            var judges = exams.Where(e => e.ExamType == ExamType.Judge).ToList();
+            var singlesimplejudges = judges.Where(e => e.Difficulty == DifficultyType.simple).ToList();
+            var singlegeneraljudges = judges.Where(e => e.Difficulty == DifficultyType.general).ToList();
+            var singledifficultjudges = judges.Where(e => e.Difficulty == DifficultyType.difficult).ToList();
+
+
+            var simpleanswers = exams.Where(e => e.ExamType == ExamType.ShortAnswer).ToList();
+            var singlesimplesimpleanswers = simpleanswers.Where(e => e.Difficulty == DifficultyType.simple).ToList();
+            var singlegeneralsimpleanswers = simpleanswers.Where(e => e.Difficulty == DifficultyType.general).ToList();
+            var singledifficultsimpleanswers = simpleanswers.Where(e => e.Difficulty == DifficultyType.difficult).ToList();
+
 
             Random random = new Random();
             ArrayList single = new ArrayList();
@@ -93,16 +111,28 @@ namespace OnlineTestForCLanguage.Sessions
                 //7:2:1
                 case Exams.DifficultyType.simple:
                     #region 单选题
-                    
+                    //30
+                    //取一个中等难度单选题 5分
+                    var simpleGeneral_simple = singlegeneralSelects[random.Next(0, singlegeneralSelects.Count())];
+                    single.Add(simpleGeneral_simple);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = simpleGeneral_simple.Id,
+                        IsDeleted = false,
+
+                    });
+                    singlei++;
+
+                    // 取5个简单难度单选题 25分
                     while (singlei < 6)
                     {
-                        var index = random.Next(0, singleSelects.Count());
+                        var index = random.Next(0, singlesimpleSelects.Count());
                         if (!single.Contains(index))
                         {
                             single.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = singleSelects.ToList()[index].Id,
+                                ExamId = singlesimpleSelects.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -110,18 +140,29 @@ namespace OnlineTestForCLanguage.Sessions
                         }
                     }
                     #endregion
-
+                    //30
                     #region 多选
-                  
+                    //取一个中等难度多选题 10分
+                    var mulselectGeneral_simple = singlegeneralmulSelects[random.Next(0, singlegeneralmulSelects.Count())];
+                    mulle.Add(mulselectGeneral_simple);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = mulselectGeneral_simple.Id,
+                        IsDeleted = false,
+
+                    });
+                    muli++;
+
+                    // 取2个简单难度多选题 20分
                     while (muli < 3)
                     {
-                        var index = random.Next(0, mulSelects.Count());
+                        var index = random.Next(0, singlesimplemulSelects.Count());
                         if (!mulle.Contains(index))
                         {
                             mulle.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = mulSelects.ToList()[index].Id,
+                                ExamId = singlesimplemulSelects.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -129,18 +170,30 @@ namespace OnlineTestForCLanguage.Sessions
                         }
                     }
                     #endregion
-
+                    //10
                     #region 判断
-                    
+
+                    //取一个中等难度判断题 5分
+                    var judgeGeneral_simple = singlegeneraljudges[random.Next(0, singlegeneraljudges.Count())];
+                    judgee.Add(judgeGeneral_simple);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = judgeGeneral_simple.Id,
+                        IsDeleted = false,
+
+                    });
+                    judgei++;
+
+                    // 取1个简单难度判断题 5分
                     while (judgei < 2)
                     {
-                        var index = random.Next(0, judges.Count());
+                        var index = random.Next(0, singlesimplejudges.Count());
                         if (!judgee.Contains(index))
                         {
                             judgee.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = judges.ToList()[index].Id,
+                                ExamId = singlesimplejudges.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -148,18 +201,29 @@ namespace OnlineTestForCLanguage.Sessions
                         }
                     }
                     #endregion
-
+                    //30
                     #region 简答
-                   
+                    //取一个困难难度简答题 10分
+                    var singleDifficult_simple = singledifficultsimpleanswers[random.Next(0, singledifficultsimpleanswers.Count())];
+                    shortle.Add(singleDifficult_simple);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = singleDifficult_simple.Id,
+                        IsDeleted = false,
+
+                    });
+                    shorti++;
+
+                    // 取2个简单难度简答题 20分
                     while (shorti < 3)
                     {
-                        var index = random.Next(0, simpleanswers.Count());
+                        var index = random.Next(0, singlesimplesimpleanswers.Count());
                         if (!shortle.Contains(index))
                         {
                             shortle.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = simpleanswers.ToList()[index].Id,
+                                ExamId = singlesimplesimpleanswers.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -171,16 +235,28 @@ namespace OnlineTestForCLanguage.Sessions
                 //5:3:2
                 case Exams.DifficultyType.general:
                     #region 单选题
+                    //30
+                    //取一个中等难度单选题 5分
+                    var simpleGeneral_general = singlegeneralSelects[random.Next(0, singlegeneralSelects.Count())];
+                    single.Add(simpleGeneral_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = simpleGeneral_general.Id,
+                        IsDeleted = false,
 
+                    });
+                    singlei++;
+
+                    // 取5个简单难度单选题 25分
                     while (singlei < 6)
                     {
-                        var index = random.Next(0, singleSelects.Count());
+                        var index = random.Next(0, singlesimpleSelects.Count());
                         if (!single.Contains(index))
                         {
                             single.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = singleSelects.ToList()[index].Id,
+                                ExamId = singlesimpleSelects.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -188,78 +264,123 @@ namespace OnlineTestForCLanguage.Sessions
                         }
                     }
                     #endregion
-
+                    //30
                     #region 多选
-
-                    while (muli < 3)
+                    //取一个简单难度多选题 10分
+                    var mulselectSimple_general = singlesimplemulSelects[random.Next(0, singlesimplemulSelects.Count())];
+                    mulle.Add(mulselectSimple_general);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, mulSelects.Count());
-                        if (!mulle.Contains(index))
-                        {
-                            mulle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = mulSelects.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = mulselectSimple_general.Id,
+                        IsDeleted = false,
 
-                            });
-                            muli++;
-                        }
-                    }
+                    });
+
+                    //取一个中等难度多选题 10分
+                    var mulselectGeneral_general = singlegeneralmulSelects[random.Next(0, singlegeneralmulSelects.Count())];
+                    mulle.Add(mulselectGeneral_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = mulselectGeneral_general.Id,
+                        IsDeleted = false,
+
+                    });
+
+
+                    // 取1个困难难度多选题 10分
+                    var mulselectDifficult_general = singledifficultmulSelects[random.Next(0, singledifficultmulSelects.Count())];
+                    mulle.Add(mulselectDifficult_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = mulselectDifficult_general.Id,
+                        IsDeleted = false,
+
+                    });
+
+
                     #endregion
-
+                    //10
                     #region 判断
 
-                    while (judgei < 2)
+                    //取一个简单难度判断题 5分
+                    var judgeSimple_general = singlesimplejudges[random.Next(0, singlesimplejudges.Count())];
+                    judgee.Add(judgeSimple_general);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, judges.Count());
-                        if (!judgee.Contains(index))
-                        {
-                            judgee.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = judges.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = judgeSimple_general.Id,
+                        IsDeleted = false,
 
-                            });
-                            judgei++;
-                        }
-                    }
+                    });
+
+                    // 取1个中等难度判断题 5分
+                    var judgeGeneral_general = singlegeneraljudges[random.Next(0, singlegeneraljudges.Count())];
+                    judgee.Add(judgeGeneral_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = judgeGeneral_general.Id,
+                        IsDeleted = false,
+
+                    });
+
                     #endregion
-
+                    //30
                     #region 简答
-
-                    while (shorti < 3)
+                    //分别取各类难度简答题各一个 30分
+                    var singleSimple_general = singlesimplesimpleanswers[random.Next(0, singlesimplesimpleanswers.Count())];
+                    shortle.Add(singleSimple_general);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, simpleanswers.Count());
-                        if (!shortle.Contains(index))
-                        {
-                            shortle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = simpleanswers.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = singleSimple_general.Id,
+                        IsDeleted = false,
 
-                            });
-                            shorti++;
-                        }
-                    }
+                    });
+
+                    var singleGeneral_general = singlegeneralsimpleanswers[random.Next(0, singlegeneralsimpleanswers.Count())];
+                    shortle.Add(singleGeneral_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = singleGeneral_general.Id,
+                        IsDeleted = false,
+
+                    });
+
+
+                    var singleDifficult_general = singledifficultsimpleanswers[random.Next(0, singledifficultsimpleanswers.Count())];
+                    shortle.Add(singleDifficult_general);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = singleDifficult_general.Id,
+                        IsDeleted = false,
+
+                    });
+
                     #endregion
 
                     break;
                 //3:5:2
                 case Exams.DifficultyType.difficult:
                     #region 单选题
+                    //30
+                    //取1个简单 5个中等难度单选题
+                    var simpleGeneral_difficult = singlesimpleSelects[random.Next(0, singlesimpleSelects.Count())];
+                    single.Add(simpleGeneral_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = simpleGeneral_difficult.Id,
+                        IsDeleted = false,
+
+                    });
+                    singlei++;
 
                     while (singlei < 6)
                     {
-                        var index = random.Next(0, singleSelects.Count());
+                        var index = random.Next(0, singlegeneralSelects.Count());
                         if (!single.Contains(index))
                         {
                             single.Add(index);
                             entity.PaperDetails.Add(new PaperDetail
                             {
-                                ExamId = singleSelects.ToList()[index].Id,
+                                ExamId = singlegeneralSelects.ToList()[index].Id,
                                 IsDeleted = false,
 
                             });
@@ -267,139 +388,96 @@ namespace OnlineTestForCLanguage.Sessions
                         }
                     }
                     #endregion
-
+                    //30
                     #region 多选
-
-                    while (muli < 3)
+                    //取一个简单难度多选题 10分
+                    var mulselectSimple_difficult = singlesimplemulSelects[random.Next(0, singlesimplemulSelects.Count())];
+                    mulle.Add(mulselectSimple_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, mulSelects.Count());
-                        if (!mulle.Contains(index))
-                        {
-                            mulle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = mulSelects.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = mulselectSimple_difficult.Id,
+                        IsDeleted = false,
 
-                            });
-                            muli++;
-                        }
-                    }
+                    });
+
+                    //取一个中等难度多选题 10分
+                    var mulselectGeneral_difficult = singlegeneralmulSelects[random.Next(0, singlegeneralmulSelects.Count())];
+                    mulle.Add(mulselectGeneral_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = mulselectGeneral_difficult.Id,
+                        IsDeleted = false,
+
+                    });
+
+
+                    // 取1个困难难度多选题 10分
+                    var mulselectDifficult_difficult = singledifficultmulSelects[random.Next(0, singledifficultmulSelects.Count())];
+                    mulle.Add(mulselectDifficult_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = mulselectDifficult_difficult.Id,
+                        IsDeleted = false,
+
+                    });
+
+
                     #endregion
-
+                    //10
                     #region 判断
 
-                    while (judgei < 2)
+                    //一个简单一个中等
+                    var judgeSimple_difficult = singlesimplejudges[random.Next(0, singlesimplejudges.Count())];
+                    judgee.Add(judgeSimple_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, judges.Count());
-                        if (!judgee.Contains(index))
-                        {
-                            judgee.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = judges.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = judgeSimple_difficult.Id,
+                        IsDeleted = false,
 
-                            });
-                            judgei++;
-                        }
-                    }
+                    });
+
+                    // 取1个中等难度判断题 5分
+                    var judgeGeneral_difficult = singlegeneraljudges[random.Next(0, singlegeneraljudges.Count())];
+                    judgee.Add(judgeGeneral_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
+                    {
+                        ExamId = judgeGeneral_difficult.Id,
+                        IsDeleted = false,
+
+                    });
+
                     #endregion
-
+                    //30
                     #region 简答
-
-                    while (shorti < 3)
+                    //分别取各类难度简答题各一个 30分
+                    var singleSimple_difficult = singlesimplesimpleanswers[random.Next(0, singlesimplesimpleanswers.Count())];
+                    shortle.Add(singleSimple_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, simpleanswers.Count());
-                        if (!shortle.Contains(index))
-                        {
-                            shortle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = simpleanswers.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = singleSimple_difficult.Id,
+                        IsDeleted = false,
 
-                            });
-                            shorti++;
-                        }
-                    }
-                    #endregion
-                    break;
-                default:
-                    #region 单选题
+                    });
 
-                    while (singlei < 6)
+                    var singleGeneral_difficult = singlegeneralsimpleanswers[random.Next(0, singlegeneralsimpleanswers.Count())];
+                    shortle.Add(singleGeneral_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, singleSelects.Count());
-                        if (!single.Contains(index))
-                        {
-                            single.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = singleSelects.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = singleGeneral_difficult.Id,
+                        IsDeleted = false,
 
-                            });
-                            singlei++;
-                        }
-                    }
-                    #endregion
+                    });
 
-                    #region 多选
 
-                    while (muli < 3)
+                    var singleDifficult_difficult = singledifficultsimpleanswers[random.Next(0, singledifficultsimpleanswers.Count())];
+                    shortle.Add(singleDifficult_difficult);
+                    entity.PaperDetails.Add(new PaperDetail
                     {
-                        var index = random.Next(0, mulSelects.Count());
-                        if (!mulle.Contains(index))
-                        {
-                            mulle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = mulSelects.ToList()[index].Id,
-                                IsDeleted = false,
+                        ExamId = singleDifficult_difficult.Id,
+                        IsDeleted = false,
 
-                            });
-                            muli++;
-                        }
-                    }
-                    #endregion
+                    });
 
-                    #region 判断
-
-                    while (judgei < 2)
-                    {
-                        var index = random.Next(0, judges.Count());
-                        if (!judgee.Contains(index))
-                        {
-                            judgee.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = judges.ToList()[index].Id,
-                                IsDeleted = false,
-
-                            });
-                            judgei++;
-                        }
-                    }
-                    #endregion
-
-                    #region 简答
-
-                    while (shorti < 3)
-                    {
-                        var index = random.Next(0, simpleanswers.Count());
-                        if (!shortle.Contains(index))
-                        {
-                            shortle.Add(index);
-                            entity.PaperDetails.Add(new PaperDetail
-                            {
-                                ExamId = simpleanswers.ToList()[index].Id,
-                                IsDeleted = false,
-
-                            });
-                            shorti++;
-                        }
-                    }
                     #endregion
                     break;
             }

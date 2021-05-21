@@ -2,9 +2,7 @@
 @using OnlineTestForCLanguage.Web.Models.Common.Modals
 @using OnlineTestForCLanguage.Web.Models.Papers
 @model EditPaperModalViewModel
-@{
-    Layout = null;
-}
+@{ Layout = null; }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("编辑考题"))
 <form name="UserEditForm" role="form" class="form-horizontal">
     <input type="hidden" name="Id" value="@Model.Paper.Id" />
@@ -35,51 +33,49 @@
             <div class="tab-pane container" id="edit-Exam-details">
                 <div><label>请在下面考题中,选取相应的题目组成试卷</label></div>
                 <div>
-                <label>单选题(每题5分)</label>
-                    @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect))
+                    <label>单选题(每题5分)</label>
+                    @foreach (var exam in Model.Exams.Where(e => e.ExamType == OnlineTestForCLanguage.Exams.ExamType.SingleSelect))
                     {
-                <div class="col-md-6">
-                    <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
-                    <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+        <div class="col-md-12">
+            <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
+            <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+        </div>}
                 </div>
-                    }
-                </div>
-                 
-                <div> <label>多选题(每题10分)</label>
-                    @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect))
-                    {
-                     
-                <div class="col-md-6">
-                    <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
-                    <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
-                </div>
-                    }</div>
-                   
 
-                   <div>
-                <label>判断题(每题5分)</label>
-                    @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge))
+                <div>
+                    <label>多选题(每题10分)</label>
+                    @foreach (var exam in Model.Exams.Where(e => e.ExamType == OnlineTestForCLanguage.Exams.ExamType.MulSelect))
                     {
-                      
-                <div class="col-md-6">
-                    <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
-                    <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+
+        <div class="col-md-12">
+            <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
+            <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+        </div>}
                 </div>
-                    }
-                   </div>
-                   
-                   <div>
+
+
+                <div>
+                    <label>判断题(每题5分)</label>
+                    @foreach (var exam in Model.Exams.Where(e => e.ExamType == OnlineTestForCLanguage.Exams.ExamType.Judge))
+                    {
+
+        <div class="col-md-12">
+            <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
+            <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+        </div>}
+                </div>
+
+                <div>
                     <label>简答题(每题10分)</label>
-                    @foreach (var exam in Model.Exams.Where(e=>e.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
+                    @foreach (var exam in Model.Exams.Where(e => e.ExamType == OnlineTestForCLanguage.Exams.ExamType.ShortAnswer))
                     {
-                      
-                <div class="col-md-6">
-                    <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
-                    <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+
+        <div class="col-md-12">
+            <input type="checkbox" name="exam" value="@exam.Id" title="@exam.Title" class="filled-in" id="@($"exam{exam.Id}")" @(Model.ExamIsInDetail(exam) ? "checked" : "") />
+            <label for="@($"exam{exam.Id}")" title="@exam.Title">@exam.Title,分数:@exam.Score,难度:@exam.Difficulty_Info</label>
+        </div>}
                 </div>
-                    }
-                   </div>
-                   
+
 
             </div>
         </div>

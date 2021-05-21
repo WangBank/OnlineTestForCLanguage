@@ -29,9 +29,15 @@ namespace OnlineTestForCLanguage.Web.Controllers
 
         public async Task<ActionResult> Index(PagedExamResultRequestDto input)
         {
-            // 单选6 多选3 判断2 简答3
+            // 每种难度类型必须满足大于 单选6 多选3 判断2 简答3
             var exams = await _ExamsAppService.GetAllNoPageAsync();
-            if (exams.Where(e=>e.ExamType == Exams.ExamType.Judge).Count() < 2 || exams.Where(e => e.ExamType == Exams.ExamType.ShortAnswer).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.MulSelect).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.SingleSelect).Count() < 6)
+            if (
+                exams.Where(e=>e.ExamType == Exams.ExamType.Judge && e.Difficulty == Exams.DifficultyType.simple).Count() < 2 || exams.Where(e => e.ExamType == Exams.ExamType.ShortAnswer && e.Difficulty == Exams.DifficultyType.simple).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.MulSelect && e.Difficulty == Exams.DifficultyType.simple).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.SingleSelect && e.Difficulty == Exams.DifficultyType.simple).Count() < 6
+                ||
+                exams.Where(e => e.ExamType == Exams.ExamType.Judge && e.Difficulty == Exams.DifficultyType.general).Count() < 2 || exams.Where(e => e.ExamType == Exams.ExamType.ShortAnswer && e.Difficulty == Exams.DifficultyType.general).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.MulSelect && e.Difficulty == Exams.DifficultyType.general).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.SingleSelect && e.Difficulty == Exams.DifficultyType.general).Count() < 6
+                ||
+                exams.Where(e => e.ExamType == Exams.ExamType.Judge && e.Difficulty == Exams.DifficultyType.difficult).Count() < 2 || exams.Where(e => e.ExamType == Exams.ExamType.ShortAnswer && e.Difficulty == Exams.DifficultyType.difficult).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.MulSelect && e.Difficulty == Exams.DifficultyType.difficult).Count() < 3 || exams.Where(e => e.ExamType == Exams.ExamType.SingleSelect && e.Difficulty == Exams.DifficultyType.difficult).Count() < 6
+                )
             {
                 ViewBag.CanAutoCreatePaper = false;
             }
