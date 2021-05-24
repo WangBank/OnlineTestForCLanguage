@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OnlineTestForCLanguage.Users
 {
-    [AbpAuthorize(PermissionNames.Pages_Users)]
+    [AbpAuthorize]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {
         private readonly UserManager _userManager;
@@ -51,7 +51,7 @@ namespace OnlineTestForCLanguage.Users
             _abpSession = abpSession;
             _logInManager = logInManager;
         }
-
+        [AbpAuthorize(PermissionNames.Pages_Users)]
         public override async Task<UserDto> CreateAsync(CreateUserDto input)
         {
             CheckCreatePermission();
@@ -74,7 +74,7 @@ namespace OnlineTestForCLanguage.Users
 
             return MapToEntityDto(user);
         }
-
+        [AbpAuthorize(PermissionNames.Pages_Users)]
         public override async Task<UserDto> UpdateAsync(UserDto input)
         {
             CheckUpdatePermission();
@@ -92,7 +92,7 @@ namespace OnlineTestForCLanguage.Users
 
             return await GetAsync(input);
         }
-
+        [AbpAuthorize(PermissionNames.Pages_Users)]
         public override async Task DeleteAsync(EntityDto<long> input)
         {
             var user = await _userManager.GetUserByIdAsync(input.Id);
@@ -233,6 +233,13 @@ namespace OnlineTestForCLanguage.Users
             }
 
             return true;
+        }
+
+        public async Task<IList<string>> GetNowRoles()
+        {
+            var user = await _userManager.GetUserByIdAsync(AbpSession.UserId.Value);
+            var roles =await _userManager.GetRolesAsync(user);
+            return roles;
         }
     }
 }

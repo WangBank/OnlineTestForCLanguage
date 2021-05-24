@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OnlineTestForCLanguage.Users;
 
 namespace OnlineTestForCLanguage.Web.Controllers
 {
@@ -20,16 +21,21 @@ namespace OnlineTestForCLanguage.Web.Controllers
     {
         private readonly ITestsAppService _TestAppService;
         private readonly IPapersAppService _PaperAppService;
-        public TestsController(ITestsAppService TestAppService, IPapersAppService PaperAppService)
+        private readonly IUserAppService _userAppService;
+        public TestsController(ITestsAppService TestAppService, IPapersAppService PaperAppService, IUserAppService userAppService)
         {
             _TestAppService = TestAppService;
             _PaperAppService = PaperAppService;
+            _userAppService = userAppService;
         }
 
         public async Task<ActionResult> Index()
         {
             var output = await _PaperAppService.GetAllAsync(new PagedPaperResultRequestDto());
-            var model = new IndexViewModel(output.Items);
+            var canAddTest = false;
+            var nowroles= await _userAppService.GetNowRoles();
+            canAddTest = !nowroles.Contains("学生");
+            var model = new IndexViewModel(output.Items, canAddTest);
             return View(model);
         }
         public async Task<ActionResult> EditModal(long TestId)

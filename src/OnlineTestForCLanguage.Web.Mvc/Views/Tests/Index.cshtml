@@ -18,10 +18,14 @@
                 <h1>试卷信息</h1>
             </div>
             <div class="col-sm-6">
+                @if (Model.CanAddTest)
+                {
                 <a href="javascript:;" data-toggle="modal" data-target="#TestCreateModal" class="btn bg-blue float-sm-right">
                     <i class="fa fa-plus-square"></i>
                     新增
                 </a>
+                }
+                
             </div>
         </div>
     </div>

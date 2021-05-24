@@ -1,0 +1,56 @@
+﻿@using OnlineTestForCLanguage.Web.Startup
+@{
+    ViewBag.Title = "主页";
+    ViewBag.CurrentPageName = PageNames.Home;
+}
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/libs/chartjs/dist/Chart.js" asp-append-version="true"></script>
+        <script src="~/view-resources/Views/Home/Index.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/_Bundles/home-index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h1 class="m-0 text-dark">主页</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                       
+                        <h1>考 生 须 知</h1>
+
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header text-left col-md-8 offset-md-2">
+                        1、 考生通过账号和密码登录进入考试界面，将携带的身份证件放在桌子的左上角，供巡考老师检查。
+                        <br />
+                        2、 进入考场请保持肃静，不得大声喧哗，坐到自己的机位准备考试。
+                        <br />
+                        3、 考试时不得携带任何违禁物品、通讯工具（如：无线耳机、移动电话及其他无线接收、传送设备等）、相关书籍资料等进入机房；已带入的，应存放到考场指定位置，电子产品应切断电源。考试期间，凡发现考试人员将违禁物品带至座位或身上的，一律按违纪处理。
+                        <br />
+                        4、 考生应严格遵守考试纪律，诚信应考。如有违纪、作弊等行为的，将依据有关规定处理、违纪情况纳入考生诚信档案；涉嫌违法的，移交公安机关。
+                    </div>
+
+                </div>
+
+            </div>
+         
+        </div>
+    </div>
+</section>

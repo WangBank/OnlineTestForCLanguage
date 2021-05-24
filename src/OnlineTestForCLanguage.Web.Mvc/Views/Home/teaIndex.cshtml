@@ -1,0 +1,75 @@
+﻿@using OnlineTestForCLanguage.Web.Startup
+@{
+    ViewBag.Title = "主页";
+    ViewBag.CurrentPageName = PageNames.Home;
+}
+@section scripts
+{
+    <environment names="Development">
+        <script src="~/libs/chartjs/dist/Chart.js" asp-append-version="true"></script>
+        <script src="~/view-resources/Views/Home/Index.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Staging,Production">
+        <script src="~/view-resources/Views/_Bundles/home-index.min.js" asp-append-version="true"></script>
+    </environment>
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h1 class="m-0 text-dark">主页</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <p>
+                            <strong>谢谢您的光临</strong>
+                        </p>
+                        <h1>欢迎进入C语言在线考试系统</h1>
+
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2>添加、修改、删除、查询试题 &nbsp;→  &nbsp;考题管理</h2>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header text-center">
+                      
+                        <h2>新增及编辑试卷&nbsp;→  &nbsp;试卷管理</h2>
+
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header text-center">
+                       
+                        <h2>绑定试卷并设置考试的起止时间&nbsp;→  &nbsp;考试管理</h2>
+                      
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="card-header text-center">
+                       
+                        <h2>对考试进行阅卷和查看结果&nbsp;→  &nbsp;考试统计</h2>
+                    </div>
+
+                </div>
+
+            </div>
+         
+        </div>
+    </div>
+</section>

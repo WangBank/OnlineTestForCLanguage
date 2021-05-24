@@ -9,7 +9,7 @@ using OnlineTestForCLanguage.Web.Models.Users;
 
 namespace OnlineTestForCLanguage.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Users)]
+    
     public class UsersController : OnlineTestForCLanguageControllerBase
     {
         private readonly IUserAppService _userAppService;
@@ -18,7 +18,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
         {
             _userAppService = userAppService;
         }
-
+        [AbpMvcAuthorize(PermissionNames.Pages_Users)]
         public async Task<ActionResult> Index()
         {
             var roles = (await _userAppService.GetRoles()).Items;
@@ -28,7 +28,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
             };
             return View(model);
         }
-
+        [AbpMvcAuthorize(PermissionNames.Pages_Users)]
         public async Task<ActionResult> EditModal(long userId)
         {
             var user = await _userAppService.GetAsync(new EntityDto<long>(userId));
