@@ -13,7 +13,7 @@
         <script src="~/view-resources/Views/Account/Register.min.js" asp-append-version="true"></script>
     </environment>
 }
-<h4 class="text-center">@L("Register")</h4>
+<h4 class="text-center">管理员注册</h4>
 <form id="RegisterForm" asp-action="Register" method="post">
     @if (ViewBag.ErrorMessage != null)
     {
@@ -65,10 +65,10 @@
     </div>
     <div class="row">
         <div class="col-8">
-            <a asp-action="Login" class="btn btn-default btn-flat"><i class="fa fa-arrow-circle-left"></i> @L("Back")</a>
+            <a asp-action="Login" class="btn btn-default btn-flat"><i class="fa fa-arrow-circle-left"></i>返回登录</a>
         </div>
         <div class="col-4">
-            <button type="submit" id="RegisterButton" class="btn btn-primary btn-flat float-right">@L("Register")</button>
+            <button type="submit" id="RegisterButton" class="btn btn-primary btn-flat float-right">注册</button>
         </div>
     </div>
 </form>

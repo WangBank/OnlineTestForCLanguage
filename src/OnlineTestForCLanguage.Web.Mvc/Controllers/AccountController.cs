@@ -214,9 +214,9 @@ namespace OnlineTestForCLanguage.Web.Controllers
 
                 await _unitOfWorkManager.Current.SaveChangesAsync();
 
-                Debug.Assert(user.TenantId != null);
+               
 
-                var tenant = await _tenantManager.GetByIdAsync(user.TenantId.Value);
+               
 
                 // Directly login if possible
                 if (user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin))
@@ -224,11 +224,11 @@ namespace OnlineTestForCLanguage.Web.Controllers
                     AbpLoginResult<Tenant, User> loginResult;
                     if (externalLoginInfo != null)
                     {
-                        loginResult = await _logInManager.LoginAsync(externalLoginInfo, tenant.TenancyName);
+                        loginResult = await _logInManager.LoginAsync(externalLoginInfo, "");
                     }
                     else
                     {
-                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, tenant.TenancyName);
+                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, "");
                     }
 
                     if (loginResult.Result == AbpLoginResultType.Success)
@@ -242,7 +242,7 @@ namespace OnlineTestForCLanguage.Web.Controllers
 
                 return View("RegisterResult", new RegisterResultViewModel
                 {
-                    TenancyName = tenant.TenancyName,
+                    TenancyName = "",
                     NameAndSurname = user.Name + " " + user.Surname,
                     UserName = user.UserName,
                     EmailAddress = user.EmailAddress,
