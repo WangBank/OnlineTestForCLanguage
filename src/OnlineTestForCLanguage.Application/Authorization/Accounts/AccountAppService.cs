@@ -35,6 +35,12 @@ namespace OnlineTestForCLanguage.Authorization.Accounts
             return new IsTenantAvailableOutput(TenantAvailabilityState.Available, tenant.Id);
         }
 
+
+        /// <summary>
+        /// ¹ÜÀíÔ±×¢²á
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<RegisterOutput> Register(RegisterInput input)
         {
             var user = await _userRegistrationManager.RegisterAsync(

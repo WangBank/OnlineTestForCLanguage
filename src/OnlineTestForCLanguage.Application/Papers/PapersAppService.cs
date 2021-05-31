@@ -31,6 +31,11 @@ namespace OnlineTestForCLanguage.Sessions
             _userManager = userManager;
             _ExamRepository = ExamRepository;
         }
+        /// <summary>
+        /// 获取试卷明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<PaperDto> GetAsync(EntityDto<long> input)
         {
             var paper = await _PaperRepository.GetAllIncluding(p => p.PaperDetails).FirstOrDefaultAsync(p => p.Id == input.Id && !p.IsDeleted);
@@ -38,6 +43,11 @@ namespace OnlineTestForCLanguage.Sessions
             return result;
         }
 
+        /// <summary>
+        /// 获取试卷列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<ListResultDto<PaperDto>> GetPapersAsync(PagedPaperResultRequestDto input)
         {
             var Papers = await GetAllAsync(input);
@@ -45,6 +55,11 @@ namespace OnlineTestForCLanguage.Sessions
             return Papers;
         }
 
+        /// <summary>
+        /// 手动创建试卷
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<PaperDto> CreateAsync(CreatePaperDto input)
         {
             CheckCreatePermission();
@@ -59,6 +74,11 @@ namespace OnlineTestForCLanguage.Sessions
             return MapToEntityDto(entity);
         }
 
+        /// <summary>
+        /// 自动创建试卷
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<PaperDto> AutoCreateAsync(AutoCreatePaperDto input)
         {
             CheckCreatePermission();
@@ -488,6 +508,12 @@ namespace OnlineTestForCLanguage.Sessions
 
             return MapToEntityDto(entity);
         }
+
+       /// <summary>
+       /// 修改试卷信息
+       /// </summary>
+       /// <param name="input"></param>
+       /// <returns></returns>
         public override async Task<PaperDto> UpdateAsync(PaperDto input)
         {
             CheckUpdatePermission();
@@ -556,6 +582,12 @@ namespace OnlineTestForCLanguage.Sessions
             return paperDto;
         }
 
+
+        /// <summary>
+        /// 删除试卷
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task DeleteAsync(EntityDto<long> input)
         {
             var Paper = await _PaperRepository.FirstOrDefaultAsync(input.Id);

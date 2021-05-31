@@ -24,6 +24,12 @@ namespace OnlineTestForCLanguage.Sessions
             _examRepository = examRepository;
         }
 
+
+        /// <summary>
+        /// 获取试题列表，带分页
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<PagedResultDto<ExamDto>> GetAllAsync(PagedExamResultRequestDto input)
         {
             var count = _examRepository
@@ -47,6 +53,12 @@ namespace OnlineTestForCLanguage.Sessions
             };
             return result;
         }
+
+        /// <summary>
+        /// 创建试题
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<ExamDto> CreateAsync(CreateExamDto input)
         {
             CheckCreatePermission();
@@ -60,6 +72,7 @@ namespace OnlineTestForCLanguage.Sessions
 
             return MapToEntityDto(exam);
         }
+
         protected override Exam MapToEntity(CreateExamDto createInput)
         {
 
@@ -84,6 +97,12 @@ namespace OnlineTestForCLanguage.Sessions
 
             return result;
         }
+
+        /// <summary>
+        /// 修改考题
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<ExamDto> UpdateAsync(ExamDto input)
         {
             CheckUpdatePermission();
@@ -94,6 +113,12 @@ namespace OnlineTestForCLanguage.Sessions
 
             return await GetAsync(input);
         }
+
+        /// <summary>
+        /// 获取单个考题明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<ExamDto> GetAsync(EntityDto<long> input)
         {
             var exam = await _examRepository.GetAllIncluding(p => p.ExamDetails).FirstOrDefaultAsync(p => p.Id == input.Id && !p.IsDeleted);
@@ -178,13 +203,21 @@ namespace OnlineTestForCLanguage.Sessions
             }
         }
 
+       /// <summary>
+       /// 删除考题
+       /// </summary>
+       /// <param name="input"></param>
+       /// <returns></returns>
         public override async Task DeleteAsync(EntityDto<long> input)
         {
             var exam = await _examRepository.FirstOrDefaultAsync(input.Id);
             await _examRepository.DeleteAsync(exam);
         }
 
-
+        /// <summary>
+        /// 获取不带分页的考题列表
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<ExamDto>> GetAllNoPageAsync()
         {
             var exams = await _examRepository.GetAllIncluding(p => p.ExamDetails).Where(p=>!p.IsDeleted).ToListAsync();

@@ -29,7 +29,11 @@ namespace OnlineTestForCLanguage.Roles
             _roleManager = roleManager;
             _userManager = userManager;
         }
-
+        /// <summary>
+        /// 创建角色
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<RoleDto> CreateAsync(CreateRoleDto input)
         {
             CheckCreatePermission();
@@ -49,6 +53,11 @@ namespace OnlineTestForCLanguage.Roles
             return MapToEntityDto(role);
         }
 
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<ListResultDto<RoleListDto>> GetRolesAsync(GetRolesInput input)
         {
             var roles = await _roleManager
@@ -62,6 +71,11 @@ namespace OnlineTestForCLanguage.Roles
             return new ListResultDto<RoleListDto>(ObjectMapper.Map<List<RoleListDto>>(roles));
         }
 
+        /// <summary>
+        /// 更新角色
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<RoleDto> UpdateAsync(RoleDto input)
         {
             CheckUpdatePermission();
@@ -82,6 +96,12 @@ namespace OnlineTestForCLanguage.Roles
             return MapToEntityDto(role);
         }
 
+
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task DeleteAsync(EntityDto<int> input)
         {
             CheckDeletePermission();
@@ -97,6 +117,10 @@ namespace OnlineTestForCLanguage.Roles
             CheckErrors(await _roleManager.DeleteAsync(role));
         }
 
+        /// <summary>
+        /// 获取所有权限
+        /// </summary>
+        /// <returns></returns>
         public Task<ListResultDto<PermissionDto>> GetAllPermissions()
         {
             var permissions = PermissionManager.GetAllPermissions();

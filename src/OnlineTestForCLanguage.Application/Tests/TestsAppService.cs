@@ -31,6 +31,12 @@ namespace OnlineTestForCLanguage.Sessions
                _TestRepository = TestRepository;
             _TestDetailRepository = TestDetailRepository;
         }
+
+        /// <summary>
+        /// 获取考试列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task<ListResultDto<TestDto>> GetTestsAsync(PagedTestResultRequestDto input)
         {
             var Tests = await GetAllAsync(input);
@@ -56,6 +62,13 @@ namespace OnlineTestForCLanguage.Sessions
             Tests.Items = Tests.Items.OrderBy(e=>e.Id).ToList();
             return Tests;
         }
+
+
+        /// <summary>
+        /// 获取考试明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<TestDto> GetAsync(EntityDto<long> input)
         {
             var test = await _TestRepository.Query(
@@ -70,6 +83,12 @@ namespace OnlineTestForCLanguage.Sessions
             var result = MapToEntityDto(test);
             return result;
         }
+
+        /// <summary>
+        /// 创建考试，设置时间
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<TestDto> CreateAsync(CreateTestDto input)
         {
             CheckCreatePermission();
@@ -84,6 +103,11 @@ namespace OnlineTestForCLanguage.Sessions
             return MapToEntityDto(entity);
         }
 
+        /// <summary>
+        /// 更新考试明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<TestDto> UpdateAsync(TestDto input)
         {
             CheckUpdatePermission();
@@ -158,6 +182,12 @@ namespace OnlineTestForCLanguage.Sessions
 
             return result;
         }
+
+        /// <summary>
+        /// 删除考试
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task DeleteAsync(EntityDto<long> input)
         {
             var test = await _TestRepository.FirstOrDefaultAsync(input.Id);

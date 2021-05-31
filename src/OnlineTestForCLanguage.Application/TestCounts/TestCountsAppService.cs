@@ -31,6 +31,12 @@ namespace OnlineTestForCLanguage.Sessions
                _TestCountRepository = TestCountRepository;
             _TestRepository = TestRepository;
         }
+
+        /// <summary>
+        /// 学生提交考试，包含自动阅卷
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<TestCountDto> CreateAsync(CreateTestCountDto input)
         {
             CheckCreatePermission();
@@ -59,6 +65,12 @@ namespace OnlineTestForCLanguage.Sessions
             entity.StudentScoreSum = sumscore;
             return MapToEntityDto(entity);
         }
+
+        /// <summary>
+        /// 获取所有考试统计列表，带分页
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<PagedResultDto<TestCountDto>> GetAllAsync(PagedTestCountResultRequestDto input)
         {
             
@@ -85,6 +97,11 @@ namespace OnlineTestForCLanguage.Sessions
 
         }
 
+        /// <summary>
+        /// 查看考试统计明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public override async Task<TestCountDto> GetAsync(EntityDto<long> input)
         {
 
@@ -105,6 +122,11 @@ namespace OnlineTestForCLanguage.Sessions
             return result;
         }
 
+        /// <summary>
+        /// 老师手动阅卷
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public async Task InspectAsync(InspectTestCountDto input)
         {
             var TestCount = await _TestCountRepository.GetAll().Include(t => t.TestDetail_Exams).ThenInclude(t=>t.Exam).FirstOrDefaultAsync(t => t.Id == input.Id);
